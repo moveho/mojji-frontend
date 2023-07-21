@@ -1,0 +1,25 @@
+@font-face {
+   font-family: 'old_school_united_stencil_italic';
+   font-display: swap;
+   src: url('old_school_united_stencil_italic/font.ttf');
+}
+@font-face {
+   font-family: 'SUITE-Heavy';
+   font-display: swap;
+   src: url('SUITE-Heavy/font.ttf');
+}
+@font-face {
+   font-family: 'SUITE-Medium';
+   font-display: swap;
+   src: url('SUITE-Medium/font.ttf');
+}
+@font-face {
+   font-family: 'SUITE-Regular';
+   font-display: swap;
+   src: url('SUITE-Regular/font.ttf');
+}
+@font-face {
+   font-family: 'SUITE-Bold';
+   font-display: swap;
+   src: url('SUITE-Bold/font.ttf');
+}

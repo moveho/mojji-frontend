@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html  >
+<head>
+  <!-- Site made with Mobirise Website Builder v5.8.14, https://mobirise.com -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Mobirise v5.8.14, mobirise.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <link rel="shortcut icon" href="static/images/mojji-logo-3-223x228.png" type="image/x-icon">
+  <meta name="description" content="">
+  
+  
+  <title>UserCheck</title>
+  <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/bootstrap/css/bootstrap-grid.min.css">
+  <link rel="stylesheet" href="static/bootstrap/css/bootstrap-reboot.min.css">
+  <link rel="stylesheet" href="static/animatecss/animate.css">
+  <link rel="stylesheet" href="static/dropdown/css/style.css">
+  <link rel="stylesheet" href="static/socicon/css/styles.css">
+  <link rel="stylesheet" href="static/theme/css/style.css">
+  <link href="static/fonts/style.css" rel="stylesheet">
+  <link rel="preload" href="https://fonts.googleapis.com/css?family=Pangolin:400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pangolin:400&display=swap"></noscript>
+  <link rel="preload" as="style" href="static/mobirise/css/mbr-additional.css"><link rel="stylesheet" href="static/mobirise/css/mbr-additional.css" type="text/css">
+
+  
+  
+  
+</head>
+<body>
+  
+
+<section data-bs-version="5.1" class="header9 cid-tIoj9cQC0w mbr-fullscreen" id="header9-s">
+    <div class="text-center container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-9">
+                <div class="image-wrap mb-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="image-container">
+                                <label for="image1">
+                                    <input type="checkbox" id="image1" name="topImage" value="image1.jpg" onclick="handleImageSelection('image1')" />
+                                    <img src="/home/ubuntu/environment/Project/template/images1.png" alt="상의" class="float-start me-2" style="border: 1px solid #000; width: 400px; height: 400px;">
+                                </label>
+                                <div id="additionalOptions_image1" style="display: none;">
+                                    <label for="colorDropdown_image1">
+                                        색상:
+                                        <select id="colorDropdown_image1" name="additionalOption" onchange="handleColorSelection('image1')">
+                                            <option value="">색상 선택</option>
+                                            <option value="black">검정</option>
+                                            <option value="white">흰색</option>
+                                            <!-- Add more colors as needed -->
+                                        </select>
+                                    </label>
+                                    <div id="additionalOptions_category_image1" style="display: none;">
+                                        <label for="categoryDropdown_image1">
+                                            카테고리:
+                                            <select id="categoryDropdown_image1" name="additionalOption" onchange="handleCategorySelection('image1')">
+                                                <option value="">카테고리 선택</option>
+                                                <option value="option1">옵션 1</option>
+                                                <option value="option2">옵션 2</option>
+                                                <!-- Add more categories as needed -->
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="image-container">
+                                <label for="image2">
+                                    <input type="checkbox" id="image2" name="bottomImage" value="image2.jpg" onclick="handleImageSelection('image2')" />
+                                    <img src="/home/ubuntu/environment/Project/template/images2.png" alt="하의" class="float-end ms-2" style="border: 1px solid #000; width: 400px; height: 400px;">
+                                </label>
+                                <div id="additionalOptions_image2" style="display: none;">
+                                    <label for="colorDropdown_image2">
+                                        색상:
+                                        <select id="colorDropdown_image2" name="additionalOption" onchange="handleColorSelection('image2')">
+                                            <option value="">색상 선택</option>
+                                            <option value="black">검정</option>
+                                            <option value="white">흰색</option>
+                                            <!-- Add more colors as needed -->
+                                        </select>
+                                    </label>
+                                    <div id="additionalOptions_category_image2" style="display: none;">
+                                        <label for="categoryDropdown_image2">
+                                            카테고리:
+                                            <select id="categoryDropdown_image2" name="additionalOption" onchange="handleCategorySelection('image2')">
+                                                <option value="">카테고리 선택</option>
+                                                <option value="option1">옵션 1</option>
+                                                <option value="option2">옵션 2</option>
+                                                <!-- Add more categories as needed -->
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mbr-section-btn mt-3">
+                    <a class="btn btn-primary display-4" href="page6.html" id="submitBtn" disabled>제출</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    var selectedColors = [];
+    var initialSelection = true;
+
+    function handleImageSelection(imageId) {
+      var imageCheckbox = document.getElementById(imageId);
+      var additionalOptions = document.getElementById(`additionalOptions_${imageId}`);
+      var oppositeImageCheckbox = imageId === 'image1' ? document.getElementById('image2') : document.getElementById('image1');
+      var oppositeImageOptionsDropdown = imageId === 'image1' ? document.getElementById('optionsDropdown_image2') : document.getElementById('optionsDropdown_image1');
+      var oppositeColorDropdown = imageId === 'image1' ? document.getElementById('colorDropdown_image2') : document.getElementById('colorDropdown_image1');
+      var oppositeCategoryDropdown = imageId === 'image1' ? document.getElementById('categoryDropdown_image2') : document.getElementById('categoryDropdown_image1');
+      var submitBtn = document.getElementById('submitBtn');
+
+      if (imageCheckbox.checked) {
+        additionalOptions.style.display = 'block';
+        submitBtn.disabled = false;
+
+        oppositeImageCheckbox.checked = false;
+        oppositeImageCheckbox.disabled = true;
+        oppositeImageOptionsDropdown.disabled = true;
+        oppositeColorDropdown.disabled = true;
+        oppositeCategoryDropdown.disabled = true;
+      } else {
+        additionalOptions.style.display = 'none';
+        submitBtn.disabled = true;
+
+        oppositeImageCheckbox.disabled = false;
+        oppositeImageOptionsDropdown.disabled = false;
+        oppositeColorDropdown.disabled = false;
+        oppositeCategoryDropdown.disabled = false;
+      }
+
+      initialSelection = false;
+    }
+
+    function handleColorSelection(imageId) {
+      var colorDropdown = document.getElementById(`colorDropdown_${imageId}`);
+      var selectedColor = colorDropdown.value;
+
+      if (selectedColor) {
+        selectedColors.push(selectedColor);
+        checkColorSelection(imageId);
+      }
+    }
+
+    function checkColorSelection(imageId) {
+      var additionalOptionsContainer = document.getElementById(`additionalOptions_${imageId}`);
+      var additionalOptionsCategory = document.getElementById(`additionalOptions_category_${imageId}`);
+      var categoryDropdown = document.getElementById(`categoryDropdown_${imageId}`);
+
+      if (selectedColors.includes("black") || selectedColors.includes("white")) {
+        additionalOptionsCategory.style.display = "block";
+        categoryDropdown.disabled = false;
+      } else {
+        additionalOptionsCategory.style.display = "none";
+        categoryDropdown.disabled = true;
+      }
+    }
+
+    function handleCategorySelection(imageId) {
+      var categoryDropdown = document.getElementById(`categoryDropdown_${imageId}`);
+      var selectedCategory = categoryDropdown.value;
+      
+      // Handle the selected category as needed
+      
+      // Disable opposite image checkbox if the final selection is made
+      var oppositeImageCheckbox = imageId === 'image1' ? document.getElementById('image2') : document.getElementById('image1');
+      if (selectedCategory) {
+        oppositeImageCheckbox.disabled = true;
+      } else {
+        oppositeImageCheckbox.disabled = false;
+      }
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+    <div class="container">
+        <div class="media-container-row align-center mbr-white">
+            <div class="row row-links">
+                <ul class="foot-menu">
+                    
+                    
+                    
+                    
+                    
+                <li class="foot-menu-item mbr-fonts-style display-7"><a href="/#top" class="text-secondary">Help Center</a></li></ul>
+            </div>
+            <div class="row social-row">
+                <div class="social-list align-right pb-2">
+                    
+                    
+                    
+                    
+                    
+                    
+                <div class="soc-item">
+                        <a href="https://twitter.com" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social socicon-twitter socicon"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://www.facebook.com" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social socicon-facebook socicon"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://www.youtube.com" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social socicon-youtube socicon"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://instagram.com" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social socicon-instagram socicon"></span>
+                        </a>
+                    </div></div>
+            </div>
+            <div class="row row-copirayt">
+                <p class="mbr-text mb-0 mbr-fonts-style mbr-white align-center display-7">
+                    © Copyright 2023 COAI. All Rights Reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+</section><script src="static/bootstrap/js/bootstrap.bundle.min.js"></script>  <script src="static/smoothscroll/smooth-scroll.js"></script>  <script src="static/ytplayer/index.js"></script>  <script src="static/embla/embla.min.js"></script>  <script src="static/embla/script.js"></script>  <script src="static/dropdown/js/navbar-dropdown.js"></script>  <script src="static/theme/js/script.js"></script>  
+  
+  
+ <div id="scrollToTop" class="scrollToTop mbr-arrow-up"><a style="text-align: center;"><i class="mbr-arrow-up-icon mbr-arrow-up-icon-cm cm-icon cm-icon-smallarrow-up"></i></a></div>
+    <input name="animation" type="hidden">
+  </body>
+</html>

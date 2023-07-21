@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html  >
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Mobirise v5.8.14, mobirise.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <link rel="shortcut icon" href="static/images/mojji-logo-3-223x228.png" type="image/x-icon">
+  <meta name="description" content="">
+  
+  
+  <title>사용자선택</title>
+  <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/bootstrap/css/bootstrap-grid.min.css">
+  <link rel="stylesheet" href="static/bootstrap/css/bootstrap-reboot.min.css">
+  <link rel="stylesheet" href="static/animatecss/animate.css">
+  <link rel="stylesheet" href="static/dropdown/css/style.css">
+  <link rel="stylesheet" href="static/socicon/css/styles.css">
+  <link rel="stylesheet" href="static/theme/css/style.css">
+  <link href="static/fonts/style.css" rel="stylesheet">
+  <link rel="preload" href="https://fonts.googleapis.com/css?family=Pangolin:400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pangolin:400&display=swap"></noscript>
+  <link rel="preload" as="style" href="static/mobirise/css/mbr-additional.css"><link rel="stylesheet" href="static/mobirise/css/mbr-additional.css" type="text/css">
+
+  
+  
+  
+</head>
+<body>
+  
+  <section data-bs-version="5.1" class="menu cid-s48OLK6784" once="menu" id="menu1-23">
+    
+    <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+        <div class="container-fluid">
+            <div class="navbar-brand">
+                <span class="navbar-logo">
+                    <a href="/">
+                        <img src="static/images/mojji-logo-3-223x228.webp" alt="" style="height: 3.8rem;">
+                    </a>
+                </span>
+                <span class="navbar-caption-wrap"><a class="navbar-caption text-secondary display-1" href="/">MOJJI</a></span>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbarSupportedContent" data-bs-target="#navbarSupportedContent" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true"><li class="nav-item"><a class="nav-link link text-black text-primary display-7" href="/#top">로그인</a></li>
+                    <li class="nav-item"><a class="nav-link link text-black text-primary display-7" href="/#top">회원가입</a></li></ul>
+                
+                
+            </div>
+        </div>
+    </nav>
+
+</section>
+
+<section data-bs-version="5.1" class="content1 cid-tKfhiB52DE" id="content1-25">
+    <div class="container">
+        <div class="mbr-section-head" style="margin-top: 100px; margin-bottom: 70px;">
+    <div class="container animate__animated animate__delay-1s animate__fadeInUp" style="text-align: center;">
+    <!--<div class="item features-image сol-12 col-md-6 col-lg-6">-->
+            <h4 class="mbr-section-title mbr-fonts-style align-center mb-0 display-1 custom-heading">
+                <strong>✨MOJJI</strong>
+            </h4>
+            <h4 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2 custom-heading">
+                <strong>분석 결과✨</strong>
+            </h4>
+            <h5 class="mbr-section-subtitle mbr-fonts-style align-center mb-0 mt-2 display-5">분석 결과에 대해서 수정이 가능합니다.</h5>
+        </div>
+    
+      <br>
+
+<script>
+    function showImage() {
+        var selectBox = document.getElementById("mySelect");
+        var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+        var image = document.getElementById("myImage");
+
+        // 선택된 값에 따라 이미지 변경
+        if (selectedValue === "default") {
+            image.src = "";  // 기본 이미지 URL
+        } else {
+            image.src = "/static/images/mojji-output-img/" + selectedValue;
+        }
+    }
+</script>
+
+<select id="mySelect" onchange="showImage()">
+    <option value="default">의류를 선택하세요</option>
+    {% for image_name in image_names %}
+        <option value="{{ image_name }}">{{ image_name }}</option>
+    {% endfor %}
+</select>
+
+<img id="myImage" src="">
+
+
+
+
+
+<!--######################-->
+
+        <div class="container" item-align="center" style="margin-top: 50px; margin-bottom: 70px;">
+            <!--<div class="item features-image сol-12 col-md-6 col-lg-6">-->
+                <div class="item-wrapper">
+                    <div class="item-img">
+                        <!--<label for="topRadio">-->
+                        <!--    <input type="radio" id="topRadio" name="clothingType" value="top" onclick="handleClothingTypeSelection('top')" />-->
+                        <!--    <img id="topClothingImage" src="static/images/1_rembg.png" alt="상의">-->
+                            <!-- 이미지의 초기값으로 1_rembg.png가 보여집니다 -->
+                        <!--</label>-->
+                        <img id="myImage" src="" style="margin-bottom: 50px;">
+                        
+                         <div id="additionalOptions_color_top">
+                            <label for="colorDropdown_top">
+                                색상:
+                                <select id="colorDropdown_top" name="colorDropdown_top" onchange="handleColorSelection('top')">
+                                    <option value="">색상 선택</option>
+                                    <option value="검정색">검정색</option>
+                                    <option value="흰색">흰색</option>
+                                    <option value="빨강">빨강</option>
+                                    <option value="주황">주황</option>
+                                    <option value="노랑">노랑</option>
+                                    <option value="초록">초록</option>
+                                    <option value="파랑">파랑</option>
+                                    <option value="네이비">네이비</option>
+                                    <option value="보라">보라</option>
+                                    <option value="연청">연청</option>
+                                    <option value="청">청</option>
+                                    <option value="진청">진청</option>
+                                    <option value="라이트 그린">라이트 그린</option>
+                                    <option value="카키">카키</option>
+                                    <option value="라이트 핑크">라이트 핑크</option>
+                                    <option value="핑크">핑크</option>
+                                    <option value="라벤더">라벤더</option>
+                                    <option value="퍼플">퍼플</option>
+                                    <option value="라이트 옐로우">라이트 옐로우</option>
+                                    <option value="머스타드">머스타드</option>
+                                    <option value="베이지">베이지</option>
+                                    <option value="브라운">브라운</option>
+                                    <option value="아이보리">아이보리</option>
+                                    <option value="라이트 오렌지">라이트 오렌지</option>
+                                    <option value="오렌지">오렌지</option>
+                                    <option value="라이트 카키">라이트 카키</option>
+                                    <option value="회색">회색</option>
+                                    <!-- Add more colors as needed -->
+                                </select>
+                            </label>
+                            <div id="additionalOptions_category_top">
+                                <label for="categoryDropdown_top">
+                                    카테고리:
+                                    <select id="categoryDropdown_top" name="categoryDropdown_top" onchange="handleCategorySelection('top')">
+                                        <option value="">카테고리 선택</option>
+                                        <option value="long_sleeved_shirt">long_sleeved_shirt</option>
+                                        <option value="short_sleeved_shirt">short_sleeved_shirt</option>
+                                        <option value="vest">vest</option>
+                                        <option value="sling">sling</option>
+                                        <option value="option5">옵션 5</option>
+                                        <option value="option6">옵션 6</option>
+                                        <option value="option7">옵션 7</option>
+                                        <option value="option8">옵션 8</option>
+                                        <option value="option9">옵션 9</option>
+                                        <option value="option10">옵션 10</option>
+                                        <!-- Add more categories as needed -->
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="item features-image сol-12 col-md-6 col-lg-6">-->
+            <!--    <div class="item-wrapper">-->
+            <!--        <div class="item-img">-->
+            <!--            <label for="bottomRadio">-->
+            <!--                <input type="radio" id="bottomRadio" name="clothingType" value="bottom" onclick="handleClothingTypeSelection('bottom')" />-->
+            <!--                <img src="static/images/2_rembg.png" alt="하의">-->
+            <!--              </label>-->
+            <!--              <div id="additionalOptions_color_bottom">-->
+            <!--                <label for="colorDropdown_bottom">-->
+            <!--                    색상:-->
+            <!--                    <select id="colorDropdown_bottom" name="colorDropdown_bottom" onchange="handleColorSelection('bottom')">-->
+            <!--                        <option value="">색상 선택</option>-->
+            <!--                        <option value="검정색">검정색</option>-->
+            <!--                        <option value="흰색">흰색</option>-->
+            <!--                        <option value="빨강">빨강</option>-->
+            <!--                        <option value="주황">주황</option>-->
+            <!--                        <option value="노랑">노랑</option>-->
+            <!--                        <option value="초록">초록</option>-->
+            <!--                        <option value="파랑">파랑</option>-->
+            <!--                        <option value="네이비">네이비</option>-->
+            <!--                        <option value="보라">보라</option>-->
+            <!--                        <option value="연청">연청</option>-->
+            <!--                        <option value="청">청</option>-->
+            <!--                        <option value="진청">진청</option>-->
+            <!--                        <option value="라이트 그린">라이트 그린</option>-->
+            <!--                        <option value="카키">카키</option>-->
+            <!--                        <option value="라이트 핑크">라이트 핑크</option>-->
+            <!--                        <option value="핑크">핑크</option>-->
+            <!--                        <option value="라벤더">라벤더</option>-->
+            <!--                        <option value="퍼플">퍼플</option>-->
+            <!--                        <option value="라이트 옐로우">라이트 옐로우</option>-->
+            <!--                        <option value="머스타드">머스타드</option>-->
+            <!--                        <option value="베이지">베이지</option>-->
+            <!--                        <option value="브라운">브라운</option>-->
+            <!--                        <option value="아이보리">아이보리</option>-->
+            <!--                        <option value="라이트 오렌지">라이트 오렌지</option>-->
+            <!--                        <option value="오렌지">오렌지</option>-->
+            <!--                        <option value="라이트 카키">라이트 카키</option>-->
+            <!--                        <option value="회색">회색</option>-->
+                                    <!-- Add more colors as needed -->
+            <!--                    </select>-->
+            <!--                </label>-->
+            <!--                <div id="additionalOptions_category_bottom">-->
+                                <!--<label for="categoryDropdown_bottom">-->
+                                <!--    카테고리:-->
+                                <!--    <select id="categoryDropdown_bottom" name="categoryDropdown_bottom" onchange="handleCategorySelection('bottom')">-->
+                                <!--        <option value="">카테고리 선택</option>-->
+                                <!--        <option value="trousers">trousers</option>-->
+                                <!--        <option value="skirt">skirt</option>-->
+                                <!--        <option value="shorts">shorts</option>-->
+                                <!--        <option value="option4">옵션 4</option>-->
+                                <!--        <option value="option5">옵션 5</option>-->
+                                <!--        <option value="option6">옵션 6</option>-->
+                                <!--        <option value="option7">옵션 7</option>-->
+                                <!--        <option value="option8">옵션 8</option>-->
+                                <!--        <option value="option9">옵션 9</option>-->
+                                <!--        <option value="option10">옵션 10</option>-->
+                                        <!-- Add more categories as needed -->
+                                    </select>
+                                </label>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mbr-section-btn mt-3" style="margin-bottom: 50px;">
+            <button class="btn btn-primary display-4" onclick="exportToCSV(); window.location.href='/result';">제 출</button>
+        </div>
+    </div>
+</section>
+
+<!--<script>
+    function adjustImageSize(image) {
+        if (image.naturalWidth > image.naturalHeight) {
+            image.style.width = "100%";
+            image.style.height = "auto";
+        } else {
+            image.style.width = "auto";
+            image.style.height = "100%";
+        }
+    }
+    
+    function handleClothingTypeSelection(clothingType) {
+        var colorDropdown = document.getElementById(`colorDropdown_${clothingType}`);
+        var additionalOptionsColor = document.getElementById(`additionalOptions_color_${clothingType}`);
+        var categoryDropdown = document.getElementById(`categoryDropdown_${clothingType}`);
+        var additionalOptionsCategory = document.getElementById(`additionalOptions_category_${clothingType}`);
+
+        if (clothingType === 'top') {
+            document.getElementById('colorDropdown_top').disabled = false;
+            document.getElementById('categoryDropdown_top').disabled = false;
+            document.getElementById('additionalOptions_color_top').style.display = "block";
+            document.getElementById('additionalOptions_category_top').style.display = colorDropdown.value ? "block" : "none";
+            document.getElementById('colorDropdown_bottom').disabled = true;
+            document.getElementById('categoryDropdown_bottom').disabled = true;
+            document.getElementById('additionalOptions_color_bottom').style.display = "none";
+            document.getElementById('additionalOptions_category_bottom').style.display = "none";
+        } else if (clothingType === 'bottom') {
+            document.getElementById('colorDropdown_bottom').disabled = false;
+            document.getElementById('categoryDropdown_bottom').disabled = false;
+            document.getElementById('additionalOptions_color_bottom').style.display = "block";
+            document.getElementById('additionalOptions_category_bottom').style.display = colorDropdown.value ? "block" : "none";
+            document.getElementById('colorDropdown_top').disabled = true;
+            document.getElementById('categoryDropdown_top').disabled = true;
+            document.getElementById('additionalOptions_color_top').style.display = "none";
+            document.getElementById('additionalOptions_category_top').style.display = "none";
+        } 
+        
+        if (clothingType === 'bottom' && !document.getElementById('bottomRadio').checked) {
+            // bottomRadio가 체크 해제되면 bottomRadio의 드롭다운 값을 초기화
+            colorDropdown.value = '';
+            categoryDropdown.value = '';
+            additionalOptionsCategory.style.display = 'none';
+        } else if (clothingType === 'bottom' && document.getElementById('bottomRadio').checked) {
+            // bottomRadio가 다시 체크되면 이전에 선택한 값 초기화
+            colorDropdown.value = '';
+            categoryDropdown.value = '';
+        }
+    
+        if (clothingType === 'top' && !document.getElementById('topRadio').checked) {
+            // topRadio가 체크 해제되면 topRadio의 드롭다운 값을 초기화
+            colorDropdown.value = '';
+            categoryDropdown.value = '';
+            additionalOptionsCategory.style.display = 'none';
+        } else if (clothingType === 'top' && document.getElementById('topRadio').checked) {
+            // topRadio가 다시 체크되면 이전에 선택한 값 초기화
+            colorDropdown.value = '';
+            categoryDropdown.value = '';
+        }
+    }
+
+    function handleColorSelection(clothingType) {
+        var colorDropdown = document.getElementById(`colorDropdown_${clothingType}`);
+        var categoryDropdown = document.getElementById(`categoryDropdown_${clothingType}`);
+        var additionalOptionsCategory = document.getElementById(`additionalOptions_category_${clothingType}`);
+
+        if (colorDropdown.value) {
+            additionalOptionsCategory.style.display = "block";
+            categoryDropdown.disabled = false;
+        } else {
+            additionalOptionsCategory.style.display = "none";
+            categoryDropdown.disabled = true;
+            categoryDropdown.selectedIndex = 0; // Reset category dropdown selection
+        }
+    }
+
+    window.addEventListener("DOMContentLoaded", function() {
+        // Check if the initial radio button is selected
+        handleClothingTypeSelection("top");
+        handleClothingTypeSelection("bottom");
+    });
+</script>-->
+
+<!--<script>
+    var selectedClothingType = "";
+    var selectedColor = "";
+    var selectedCategory = "";
+
+    function handleClothingTypeSelection(clothingType) {
+        selectedClothingType = clothingType;
+        resetDropdownValues();
+        updateAdditionalOptionsVisibility();
+    }
+
+    function handleColorSelection(clothingType) {
+        selectedColor = document.getElementById(`colorDropdown_${clothingType}`).value;
+        updateAdditionalOptionsVisibility();
+    }
+
+    function handleCategorySelection(clothingType) {
+        selectedCategory = document.getElementById(`categoryDropdown_${clothingType}`).value;
+    }
+
+    function resetDropdownValues() {
+        selectedColor = "";
+        selectedCategory = "";
+        document.getElementById(`colorDropdown_${selectedClothingType}`).value = "";
+        document.getElementById(`categoryDropdown_${selectedClothingType}`).value = "";
+    }
+
+    function updateAdditionalOptionsVisibility() {
+        var topRadioChecked = document.getElementById('topRadio').checked;
+        var bottomRadioChecked = document.getElementById('bottomRadio').checked;
+
+        var additionalOptionsColorTop = document.getElementById('additionalOptions_color_top');
+        var additionalOptionsCategoryTop = document.getElementById('additionalOptions_category_top');
+        var additionalOptionsColorBottom = document.getElementById('additionalOptions_color_bottom');
+        var additionalOptionsCategoryBottom = document.getElementById('additionalOptions_category_bottom');
+
+        if (topRadioChecked) {
+            additionalOptionsColorTop.style.display = "block";
+            additionalOptionsCategoryTop.style.display = selectedColor ? "block" : "none";
+            additionalOptionsColorBottom.style.display = "none";
+            additionalOptionsCategoryBottom.style.display = "none";
+        } else if (bottomRadioChecked) {
+            additionalOptionsColorTop.style.display = "none";
+            additionalOptionsCategoryTop.style.display = "none";
+            additionalOptionsColorBottom.style.display = "block";
+            additionalOptionsCategoryBottom.style.display = selectedColor ? "block" : "none";
+        }
+    }
+
+    function exportToCSV() {
+        var data = [
+            ["Clothing Type", "Color", "Category"],
+            [selectedClothingType, selectedColor, selectedCategory]
+        ];
+
+        var csvContent = "data:text/csv;charset=utf-8,";
+
+        data.forEach(function (rowArray) {
+            var row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "data.csv");
+        document.body.appendChild(link); // Required for Firefox
+        link.click();
+    }
+
+    window.addEventListener("DOMContentLoaded", function() {
+        // Check if the initial radio button is selected
+        handleClothingTypeSelection("top");
+        handleClothingTypeSelection("bottom");
+    });
+</script>-->
+
+
+<script>
+    var selectedClothingType = "";
+    var selectedColor = "";
+    var selectedCategory = "";
+
+    function handleClothingTypeSelection(clothingType) {
+        selectedClothingType = clothingType;
+        resetDropdownValues();
+        updateAdditionalOptionsVisibility();
+    }
+
+    function handleColorSelection(clothingType) {
+        selectedColor = document.getElementById(`colorDropdown_${clothingType}`).value;
+        updateAdditionalOptionsVisibility();
+    }
+
+    function checkColorSelection(imageId) {
+      var additionalOptionsContainer = document.getElementById(`additionalOptions_${imageId}`);
+      var additionalOptionsCategory = document.getElementById(`additionalOptions_category_${imageId}`);
+      var categoryDropdown = document.getElementById(`categoryDropdown_${imageId}`);
+
+      if (selectedColors.includes("black") || selectedColors.includes("white")) {
+        additionalOptionsCategory.style.display = "block";
+        categoryDropdown.disabled = false;
+      } else {
+        additionalOptionsCategory.style.display = "none";
+        categoryDropdown.disabled = true;
+      }
+    }
+
+    // function handleCategorySelection(imageId) {
+    //   var categoryDropdown = document.getElementById(`categoryDropdown_${imageId}`);
+    //   var selectedCategory = categoryDropdown.value;
+      
+    //   // Handle the selected category as needed
+      
+    //   // Disable opposite image checkbox if the final selection is made
+    //   var oppositeImageCheckbox = imageId === 'image1' ? document.getElementById('image2') : document.getElementById('image1');
+    //   if (selectedCategory) {
+    //     oppositeImageCheckbox.disabled = true;
+    //   } else {
+    //     oppositeImageCheckbox.disabled = false;
+    //   }
+    // }
+    
+    function handleCategorySelection(imageId) {
+      var categoryDropdown = document.getElementById(`categoryDropdown_${imageId}`);
+      selectedCategory = categoryDropdown.value;
+      
+      // Handle the selected category as needed
+      
+      // Disable opposite image checkbox if the final selection is made
+      var oppositeImageCheckbox = imageId === 'image1' ? document.getElementById('image2') : document.getElementById('image1');
+      if (selectedCategory) {
+        oppositeImageCheckbox.disabled = true;
+      } else {
+        oppositeImageCheckbox.disabled = false;
+      }
+    }
+
+
+    function resetDropdownValues() {
+        selectedColor = "";
+        selectedCategory = "";
+        document.getElementById(`colorDropdown_${selectedClothingType}`).value = "";
+        document.getElementById(`categoryDropdown_${selectedClothingType}`).value = "";
+    }
+
+    function updateAdditionalOptionsVisibility() {
+        var topRadioChecked = document.getElementById('topRadio').checked;
+        var bottomRadioChecked = document.getElementById('bottomRadio').checked;
+
+        var additionalOptionsColorTop = document.getElementById('additionalOptions_color_top');
+        var additionalOptionsCategoryTop = document.getElementById('additionalOptions_category_top');
+        var additionalOptionsColorBottom = document.getElementById('additionalOptions_color_bottom');
+        var additionalOptionsCategoryBottom = document.getElementById('additionalOptions_category_bottom');
+
+        if (topRadioChecked) {
+            additionalOptionsColorTop.style.display = "block";
+            additionalOptionsCategoryTop.style.display = selectedColor ? "block" : "none";
+            additionalOptionsColorBottom.style.display = "none";
+            additionalOptionsCategoryBottom.style.display = "none";
+        } else if (bottomRadioChecked) {
+            additionalOptionsColorTop.style.display = "none";
+            additionalOptionsCategoryTop.style.display = "none";
+            additionalOptionsColorBottom.style.display = "block";
+            additionalOptionsCategoryBottom.style.display = selectedColor ? "block" : "none";
+        }
+    }
+
+    // function exportToCSV() {
+    //     var data = [
+    //         ["Clothing Type", "Color", "Category"],
+    //         [selectedClothingType, selectedColor, selectedCategory]
+    //     ];
+    
+    //     var csvContent = "data:text/csv;charset=utf-8,";
+    
+    //     data.forEach(function (rowArray) {
+    //         var row = rowArray.join(",");
+    //         csvContent += row + "\r\n";
+    //     });
+    
+    //     var encodedUri = encodeURI(csvContent);
+    //     var link = document.createElement("a");
+    //     link.setAttribute("href", encodedUri);
+    //     link.setAttribute("download", "data.csv"); // Replace with the desired path on your EC2 instance
+    //     document.body.appendChild(link); // Required for Firefox
+    //     link.click();
+    //     document.body.removeChild(link); // Clean up the link element
+    // }
+
+
+    // window.addEventListener("DOMContentLoaded", function() {
+    //     // Check if the initial radio button is selected
+    //     handleClothingTypeSelection("top");
+    //     handleClothingTypeSelection("bottom");
+    // });
+
+    // function exportToCSV() {
+    //     var data = [
+    //         ["Clothing Type", "Color", "Category"],
+    //         [selectedClothingType, selectedColor, selectedCategory]
+    //     ];
+    
+    //     var csvContent = "data:text/csv;charset=utf-8,";
+    
+    //     data.forEach(function (rowArray) {
+    //         var row = rowArray.join(",");
+    //         csvContent += row + "\r\n";
+    //     });
+    
+    //     var encodedUri = encodeURI(csvContent);
+    
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.onreadystatechange = function () {
+    //         if (xhr.readyState === 4 && xhr.status === 200) {
+    //             console.log("CSV file saved successfully.");
+    //         }
+    //     };
+    //     xhr.open("POST", "/save-csv", true);
+    //     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    //     xhr.send(JSON.stringify({ data: encodedUri }));
+    // }
+    
+var csvCounter = 1;
+
+function exportToCSV() {
+  var data = [
+    ["Clothing Type", "Color", "Category"],
+    [selectedClothingType, selectedColor, selectedCategory]
+  ];
+
+  var csvContent = "data:text/csv;charset=utf-8,";
+
+  data.forEach(function (rowArray) {
+    var row = rowArray.join(",");
+    csvContent += row + "\r\n";
+  });
+  
+  var encodedUri = encodeURI(csvContent);
+
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        console.log("CSV file saved successfully.");
+      } else {
+        console.error("Failed to save CSV file.");
+      }
+    }
+  };
+  xhr.open("POST", "/save-csv-new", true);
+  xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xhr.send(JSON.stringify({ data: encodedUri }));
+
+  csvCounter++;
+}
+
+</script>
+
+
+<section data-bs-version="5.1" class="footer3 cid-s48P1Icc8J" once="footers" id="footer3-24">
+
+    
+
+    
+
+    <div class="container">
+        <div class="media-container-row align-center mbr-white">
+            <div class="row row-links">
+                <ul class="foot-menu">
+                    
+                    
+                    
+                    
+                    
+                <li class="foot-menu-item mbr-fonts-style display-7"><a href="/#top" class="text-secondary">Help Center</a></li></ul>
+            </div>
+            <div class="row social-row">
+                <div class="social-list align-right pb-2">
+                    
+                    
+                    
+                    
+                    
+                    
+                <div class="soc-item">
+                        <a href="https://twitter.com" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social socicon-twitter socicon"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://www.facebook.com" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social socicon-facebook socicon"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://www.youtube.com" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social socicon-youtube socicon"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://instagram.com" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social socicon-instagram socicon"></span>
+                        </a>
+                    </div></div>
+            </div>
+            <div class="row row-copirayt">
+                <p class="mbr-text mb-0 mbr-fonts-style mbr-white align-center display-7">
+                    © Copyright 2023 COAI. All Rights Reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+</section><script src="static/bootstrap/js/bootstrap.bundle.min.js"></script>  <script src="static/smoothscroll/smooth-scroll.js"></script>  <script src="static/ytplayer/index.js"></script>  <script src="static/dropdown/js/navbar-dropdown.js"></script>  <script src="static/theme/js/script.js"></script>  
+  
+  
+ <div id="scrollToTop" class="scrollToTop mbr-arrow-up"><a style="text-align: center;"><i class="mbr-arrow-up-icon mbr-arrow-up-icon-cm cm-icon cm-icon-smallarrow-up"></i></a></div>
+    <input name="animation" type="hidden">
+
+{% block content %}{% endblock %}
+
+  </body>
+</html>

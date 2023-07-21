@@ -1,0 +1,38 @@
+ * Serving Flask app 'app'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://172.31.59.213:5001
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 102-927-764
+220.76.203.74 - - [15/Jul/2023 06:34:33] "GET / HTTP/1.1" 200 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/web/assets/mobirise-icons2/mobirise2.css HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/bootstrap/css/bootstrap-grid.min.css HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/bootstrap/css/bootstrap.min.css HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/animatecss/animate.css HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/socicon/css/styles.css HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/bootstrap/css/bootstrap-reboot.min.css HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/theme/css/style.css HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/dropdown/css/style.css HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/fonts/style.css HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/mobirise/css/mbr-additional.css HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/bootstrap/js/bootstrap.bundle.min.js HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/smoothscroll/smooth-scroll.js HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/ytplayer/index.js HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/dropdown/js/navbar-dropdown.js HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/theme/js/script.js HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/images/mojji-logo-3-223x228.webp HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/images/-coai-ppt-1-1900x1069.webp HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/images/background8.webp HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/images/background5.webp HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/images/detail-3276102-16849045597860-500-500x501.webp HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/images/detail-3276119-16831615907936-500-500x501.webp HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/images/noname-500x501.webp HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/fonts/NanumSquareRoundR/font.ttf HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/fonts/NanumSquareRoundL/font.ttf HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/fonts/NanumSquareRoundB/font.ttf HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/socicon/fonts/socicon.woff2 HTTP/1.1" 304 -
+220.76.203.74 - - [15/Jul/2023 06:34:34] "GET /static/web/assets/mobirise-icons2/mobirise2.ttf?f2bix4 HTTP/1.1" 304 -

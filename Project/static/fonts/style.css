@@ -1,0 +1,15 @@
+@font-face {
+   font-family: 'NanumSquareRoundB';
+   font-display: swap;
+   src: url('NanumSquareRoundB/font.ttf');
+}
+@font-face {
+   font-family: 'NanumSquareRoundL';
+   font-display: swap;
+   src: url('NanumSquareRoundL/font.ttf');
+}
+@font-face {
+   font-family: 'NanumSquareRoundR';
+   font-display: swap;
+   src: url('NanumSquareRoundR/font.ttf');
+}
