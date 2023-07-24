@@ -9,7 +9,7 @@ pipeline {
                     def pid = sh(script: 'pgrep -f "python3 app.py"', returnStdout: true).trim()
                     // If the process is running, stop it using sudo without password prompt
                     if (pid) {
-                        sh "echo <PASSWORD> | sudo -S kill ${pid}" // Replace <PASSWORD> with the sudo password
+                        sh "echo k8spass# | sudo -S kill ${pid}" // Replace <PASSWORD> with the sudo password
                     } else {
                         echo "Python app is not running."
                     }
