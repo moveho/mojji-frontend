@@ -339,7 +339,7 @@
     // }
 // ========================================================================================================
     function exportToCSV(identifier, directoryName) {
-        var selectedEnglishClothingT = koreanToEnglishClothing(selectedClothingType);
+        var selectedEnglishClothingType = koreanToEnglishClothing(selectedClothingType);
         var selectedClothingWithoutExtension = selectedClothingType.replace(/\.[^.]+$/, "");
         var selectedClothingWithoutSuffix = selectedClothingWithoutExtension.replace(/_\d+$/, "");
         var selectedEnglishClothingType = getCategoryAndEnglishTerm(selectedClothingWithoutSuffix);
@@ -363,6 +363,8 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     console.log("CSV file saved successfully.");
+                    // Redirect to "/result" after saving the CSV file
+                    window.location.href = "/result";
                 } else {
                     console.error("Failed to save CSV file.");
                 }
@@ -376,6 +378,7 @@
     
         csvCounter++;
     }
+
 
 
     function extractClothingType(url) {
