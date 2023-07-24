@@ -14,7 +14,9 @@ pipeline {
                 dir('/var/lib/jenkins/workspace/mojji-pipeline/Project') {
                     // Install required Python dependencies
                     sh 'pip3 install -r requirements.txt'
-                    sh 'python3 app.py &'
+
+                    // Run the 'python3 app.py' command in the background
+                    sh 'nohup python3 app.py &'
                 }
             }
         }
