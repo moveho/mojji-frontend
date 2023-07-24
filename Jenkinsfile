@@ -4,13 +4,13 @@ pipeline {
     stages {
         stage('change dir') {
             steps {
-                dir('/home/ubuntu/environment/Project') {
+                dir('/var/lib/jenkins/workspace/mojji-pipeline/Project') {
                 }
             }
         }
         stage('deploy') {
             steps {
-                dir('/home/ubuntu/environment/Project') {
+                dir('/var/lib/jenkins/workspace/mojji-pipeline/Project') {
                     sh 'python3 app.py'
                 }
             }

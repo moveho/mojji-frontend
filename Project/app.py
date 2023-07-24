@@ -197,12 +197,6 @@ def user_check():
         ExpiresIn=3600  # URL's expiration time in seconds
     )
     
-    output_url = s3.generate_presigned_url(
-    'get_object',
-    Params={'Bucket': "mojji-output-img", 'Key': prefix+image_code},
-    ExpiresIn=3600  # URL's expiration time in seconds
-    )
-    
     # Mapping Korean categories to English categories for each file_name
     english_categories = [map_korean_to_english(file_name) for file_name in object_names]
 
@@ -213,7 +207,7 @@ def user_check():
     return render_template('page5.html', code=image_code, object_names=object_names,
                            directory_name=directory_name_split, identifier=identifier,
                            oauth_code=oauth_code, result_url=result_url, full_identifier=full_identifier,
-                           english_categories=english_categories, korean_strings=korean_strings, output_url=output_url)
+                           english_categories=english_categories, korean_strings=korean_strings)
 
 def map_korean_to_english(category):
     if category in ["short_sleeved_shirt", "long_sleeved_shirt", "vest", "sling"]:
@@ -965,5 +959,5 @@ def oauth_userinfo_api():
     result = Oauth().userinfo("Bearer " + access_token)
     return jsonify(result)
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)

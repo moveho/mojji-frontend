@@ -378,13 +378,13 @@
         }
     }
 
-    var selectedValue = "";
+    // var selectedValue = "";
     
-    function handleSelection() {
-        const dropdown = document.getElementById("mySelect");
-        selectedValue = dropdown.options[dropdown.selectedIndex].value;
-        showImage(selectedValue);
-    }
+    // function handleSelection() {
+    //     const dropdown = document.getElementById("mySelect");
+    //     selectedValue = dropdown.options[dropdown.selectedIndex].value;
+    //     showImage(selectedValue);
+    // }
 // ========================================================================================
     function mapKoreanToEnglish(category) {
         switch (category) {
@@ -435,7 +435,7 @@
             const koreanString = mapEnglishToKorean(englishCategory);
 
             // Update the image and display the Korean string
-            image.src = "{{output_url}}" + '/' + selectedValue; // Replace with the actual path to the image
+            image.src = "https://mojji-output-img.s3.ap-northeast-2.amazonaws.com/after_detection_"+ "{{directory_name}}/" + selectedValue; // Replace with the actual path to the image
             document.getElementById("selectedCategory").innerText = koreanString;
         }
     }
