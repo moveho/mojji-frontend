@@ -338,10 +338,20 @@
     //     csvCounter++;
     // }
 // ========================================================================================================
-    function exportToCSV(identifier, directoryName) {
+
+    var csvCounter = 1;
+    
+    function exportToCSV(identifier) {
         var selectedEnglishClothingType = koreanToEnglishClothing(selectedClothingType);
+        
+        // Remove the ".png" extension from selectedClothingType
         var selectedClothingWithoutExtension = selectedClothingType.replace(/\.[^.]+$/, "");
+        
+    
+        // Remove the "_0" suffix from selectedClothingWithoutExtension
         var selectedClothingWithoutSuffix = selectedClothingWithoutExtension.replace(/_\d+$/, "");
+    
+        // Get the English term for the selected clothing type
         var selectedEnglishClothingType = getCategoryAndEnglishTerm(selectedClothingWithoutSuffix);
     
         var data = [
@@ -355,31 +365,27 @@
             var row = rowArray.join(",");
             csvContent += row + "\r\n";
         });
+        
     
         var encodedUri = encodeURI(csvContent);
-    
+
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     console.log("CSV file saved successfully.");
-                    // Redirect to "/result" after saving the CSV file
-                    window.location.href = "/result";
                 } else {
                     console.error("Failed to save CSV file.");
                 }
             }
         };
-    
-        var csvFileName = directoryName + ".csv"; // CSV file name with directory_name and counter
-        xhr.open("POST", "/save-csv-new?identifier=" + encodeURIComponent(identifier) + "&csv_filename=" + encodeURIComponent(csvFileName), true);
+
+        xhr.open("POST", "/save-csv-new?identifier=" + encodeURIComponent(identifier), true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.send(JSON.stringify({ data: encodedUri }));
-    
+
         csvCounter++;
     }
-
-
 
     function extractClothingType(url) {
         var startIndex = url.lastIndexOf("/") + 1; // Find the last index of "/"
@@ -433,13 +439,13 @@
         }
     }
 
-    // var selectedValue = "";
+    var selectedValue = "";
     
-    // function handleSelection() {
-    //     const dropdown = document.getElementById("mySelect");
-    //     selectedValue = dropdown.options[dropdown.selectedIndex].value;
-    //     showImage(selectedValue);
-    // }
+    function handleSelection() {
+        const dropdown = document.getElementById("mySelect");
+        selectedValue = dropdown.options[dropdown.selectedIndex].value;
+        showImage(selectedValue);
+    }
 // ========================================================================================
     function mapKoreanToEnglish(category) {
         switch (category) {

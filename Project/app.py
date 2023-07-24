@@ -752,46 +752,7 @@ def get_direc_name():
 #     return redirect('result')
 
 ####################################CSV TEST#####################################################
-# import csv
-# from urllib.parse import unquote
-# import re
-# from flask import url_for, redirect
 
-# @app.route('/save-csv-new', methods=['POST'])
-# def save_csv():
-#     identifier_param = request.args.get('identifier', '')
-#     data = request.get_json()
-#     oauth_code = session.get('oauth_code')
-#     encoded_uri = data.get('data')
-
-#     # Sanitize the identifier to remove non-alphanumeric characters
-#     sanitized_identifier = re.sub(r'\W+', '_', identifier_param)
-
-#     # Use the "{{ directory_name }}" for the directory path
-#     directory_name = "{{ directory_name }}"
-#     directory = os.path.join('/home/ubuntu/environment/efs', directory_name)
-#     if not os.path.exists(directory):
-#         os.makedirs(directory)
-
-#     # Generate a unique filename using the sanitized identifier
-#     csv_filename = f"{sanitized_identifier.rsplit('_', 1)[0]}.csv"
-#     csv_path = os.path.join(directory, csv_filename)
-
-#     with open(csv_path, 'w', newline='') as file:
-#         writer = csv.writer(file)
-#         decoded_uri = unquote(encoded_uri)
-#         rows = decoded_uri.splitlines()
-#         rows = [row.replace('data:text/csv;charset=utf-8,', '') for row in rows]
-#         for row in rows:
-#             values = row.split(',')
-#             writer.writerow(values)
-
-#     # Use the sanitized identifier for redirection
-#     return redirect(url_for('result', identifier=sanitized_identifier, oauth_code=oauth_code, directory=directory))
-
-
-
-#########################################################################
 import csv
 from urllib.parse import unquote
 import re
@@ -801,23 +762,21 @@ from flask import url_for, redirect
 def save_csv():
     identifier_param = request.args.get('identifier', '')
     data = request.get_json()
-    oauth_code = session.get('oauth_code')
     encoded_uri = data.get('data')
+    directory_name_split = request.args.get('directory_name_split', '')
 
     # Sanitize the identifier to remove non-alphanumeric characters
     sanitized_identifier = re.sub(r'\W+', '_', identifier_param)
 
-    # Use the "{{ directory_name }}" for the directory path
-    directory_name = "{{ directory_name }}"
-    directory = os.path.join('/home/ubuntu/environment/efs', directory_name)
+    directory = '/home/ubuntu/environment/efs/crawling_csv'
     if not os.path.exists(directory):
         os.makedirs(directory)
 
     # Generate a unique filename using the sanitized identifier
-    csv_filename = f"{sanitized_identifier.rsplit('_', 1)[0]}.csv"
+    csv_filename = directory_name_split + '.csv'
     csv_path = os.path.join(directory, csv_filename)
 
-    with open(csv_path, 'w', newline='', encoding='utf-8') as file:  # Specify encoding as 'utf-8'
+    with open(csv_path, 'w', newline='') as file:
         writer = csv.writer(file)
         decoded_uri = unquote(encoded_uri)
         rows = decoded_uri.splitlines()
@@ -827,7 +786,11 @@ def save_csv():
             writer.writerow(values)
 
     # Use the sanitized identifier for redirection
-    return redirect(url_for('result', identifier=sanitized_identifier, oauth_code=oauth_code, directory=directory))
+    return redirect(url_for('result', identifier=identifier_param))
+
+
+
+#########################################################################
 # =====================================테스트=============================================
 
 # const fs = require("fs");
