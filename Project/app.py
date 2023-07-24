@@ -193,7 +193,7 @@ def user_check():
     # You can use the code to generate the S3 URL for the uploaded image
     result_url = s3.generate_presigned_url(
         'get_object',
-        Params={'Bucket': "resultimg", 'Key': image_code},
+        Params={'Bucket': "resultimg", 'Key': f'after_detection_{image_code}'},
         ExpiresIn=3600  # URL's expiration time in seconds
     )
     
@@ -1013,6 +1013,9 @@ def stop_server(signal, frame):
     print("Stopping server...")
     # Add any cleanup code here if necessary
     exit(0)
+
+#########gunicorn###############
+# app = Flask(__name__)
 
 # Register the signal handler
 ######################################
