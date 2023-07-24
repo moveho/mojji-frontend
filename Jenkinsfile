@@ -22,7 +22,7 @@ pipeline {
                 label 'your_remote_server_label' // Replace with the label of the remote server agent
             }
             steps {
-                dir('/path/to/your/project/directory') { // Replace with the actual path to your project directory on the remote server
+                dir('/var/lib/jenkins/workspace/mojji-deploy/Project') { // Replace with the actual path to your project directory on the remote server
                     sh 'pip3 install -r requirements.txt'
                     sh 'nohup python3 app.py > /dev/null 2>&1 &'
                 }

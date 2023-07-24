@@ -792,10 +792,11 @@ def get_direc_name():
 
 #########################################################################
 
+import os
 import csv
 from urllib.parse import unquote
 import re
-from flask import url_for, redirect
+from flask import Flask, request, url_for, redirect
 
 @app.route('/save-csv-new', methods=['POST'])
 def save_csv():
@@ -825,8 +826,7 @@ def save_csv():
             writer.writerow(values)
 
     # Use the sanitized identifier for redirection
-    return redirect(url_for('result', identifier=identifier_param))
-
+    return redirect(url_for('result', identifier=sanitized_identifier))
 
 # =====================================테스트=============================================
 
