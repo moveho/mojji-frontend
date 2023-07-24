@@ -753,6 +753,45 @@ def get_direc_name():
 
 ####################################CSV TEST#####################################################
 
+# import csv
+# from urllib.parse import unquote
+# import re
+# from flask import url_for, redirect
+
+# @app.route('/save-csv-new', methods=['POST'])
+# def save_csv():
+#     identifier_param = request.args.get('identifier', '')
+#     data = request.get_json()
+#     encoded_uri = data.get('data')
+#     directory_name_split = request.args.get('directory_name_split', '')
+
+#     # Sanitize the identifier to remove non-alphanumeric characters
+#     sanitized_identifier = re.sub(r'\W+', '_', identifier_param)
+
+#     directory = '/home/ubuntu/environment/efs/crawling_csv'
+#     if not os.path.exists(directory):
+#         os.makedirs(directory)
+
+#     # Generate a unique filename using the sanitized identifier
+#     csv_filename = directory_name_split + '.csv'
+#     csv_path = os.path.join(directory, csv_filename)
+
+#     with open(csv_path, 'w', newline='') as file:
+#         writer = csv.writer(file)
+#         decoded_uri = unquote(encoded_uri)
+#         rows = decoded_uri.splitlines()
+#         rows = [row.replace('data:text/csv;charset=utf-8,', '') for row in rows]
+#         for row in rows:
+#             values = row.split(',')
+#             writer.writerow(values)
+
+#     # Use the sanitized identifier for redirection
+#     return redirect(url_for('result', identifier=identifier_param))
+
+
+
+#########################################################################
+
 import csv
 from urllib.parse import unquote
 import re
@@ -772,8 +811,8 @@ def save_csv():
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-    # Generate a unique filename using the sanitized identifier
-    csv_filename = directory_name_split + '.csv'
+    # Generate a unique filename using the sanitized identifier and directory_name_split
+    csv_filename = f"{directory_name_split}_{sanitized_identifier}.csv"
     csv_path = os.path.join(directory, csv_filename)
 
     with open(csv_path, 'w', newline='') as file:
@@ -788,9 +827,6 @@ def save_csv():
     # Use the sanitized identifier for redirection
     return redirect(url_for('result', identifier=identifier_param))
 
-
-
-#########################################################################
 # =====================================테스트=============================================
 
 # const fs = require("fs");
@@ -961,5 +997,22 @@ def oauth_userinfo_api():
     result = Oauth().userinfo("Bearer " + access_token)
     return jsonify(result)
 
+
+
+
+
+
+
+
+##################CICD###############
+import signal
+
+def stop_server(signal, frame):
+    print("Stopping server...")
+    # Add any cleanup code here if necessary
+    exit(0)
+
+# Register the signal handler
+######################################
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)
