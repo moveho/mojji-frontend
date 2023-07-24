@@ -286,12 +286,12 @@
         if (selectedValue === "default") {
             image.src = ""; // Default image URL
         } else {
-            // Get the identifier from the current URL and remove the file extension
-            var urlParams = new URLSearchParams(window.location.search);
-            var identifier = urlParams.get("code").replace(/\.[^/.]+$/, "");
+            // Get the 'code' and 'image_url' from the query parameters
+            var code = new URLSearchParams(window.location.search).get('code');
+            var image_url = new URLSearchParams(window.location.search).get('image_url');
 
-            // Construct the imageURL using the identifier and selectedValue
-            var imageURL = '/' + identifier + '?code=' + encodeURIComponent(selectedValue);
+            // Construct the imageURL using the 'code' and 'selectedValue'
+            var imageURL = '/check_user?' + 'code=' + encodeURIComponent(code) + '&image_url=' + encodeURIComponent(image_url) + '&clothing_type=' + encodeURIComponent(selectedValue);
             image.src = imageURL;
         }
     }

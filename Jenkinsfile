@@ -15,7 +15,7 @@ pipeline {
                 script {
                     def pid = sh(script: 'pgrep -f "python3 app.py"', returnStdout: true).trim()
                     if (pid) {
-                        sh sudo -S kill ${pid}"
+                        sh "sudo -S kill ${pid}"
                     } else {
                         echo "Python app is not running."
                     }
