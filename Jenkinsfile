@@ -2,29 +2,21 @@ pipeline {
     agent any
 
     stages {
-        stage('Stop Local Server') {
+        stage('change dir') {
             steps {
-                script {
-                    // Get the PID of the Python process
-                    def pid = sh(script: 'pgrep -f "python3 app.py"', returnStdout: true).trim()
-                    // If the process is running, stop it using sudo without password prompt
-                    if (pid) {
-                        sh "echo k8spass# | sudo -S kill ${pid}" // Replace <PASSWORD> with the sudo password
-                    } else {
-                        echo "Python app is not running."
-                    }
+                dir('/var/lib/jenkins/workspace/mojji-pipeline/Project') {
+                    // Your steps within this directory
                 }
             }
         }
-
-        stage('Deploy') {
-            agent {
-                label 'your_remote_server_label' // Replace with the label of the remote server agent
-            }
+        stage('deploy') {
             steps {
-                dir('/var/lib/jenkins/workspace/mojji-deploy/Project') { // Replace with the actual path to your project directory on the remote server
+                dir('/var/lib/jenkins/workspace/mojji-pipeline/Project') {
+                    // Install required Python dependencies
                     sh 'pip3 install -r requirements.txt'
-                    sh 'nohup python3 app.py > /dev/null 2>&1 &'
+
+                    // Run the 'python3 app.py' command in the background
+                    sh 'python3 app.py'
                 }
             }
         }

@@ -804,6 +804,7 @@ def save_csv():
     data = request.get_json()
     encoded_uri = data.get('data')
     directory_name_split = request.args.get('directory_name_split', '')
+    print({directory_name_split})
 
     # Sanitize the identifier to remove non-alphanumeric characters
     sanitized_identifier = re.sub(r'\W+', '_', identifier_param)
@@ -813,7 +814,7 @@ def save_csv():
         os.makedirs(directory)
 
     # Generate a unique filename using the sanitized identifier and directory_name_split
-    csv_filename = f'{directory_name_split}.csv'
+    csv_filename = f'CFmLTLyfApYEjw50zoAKOrVUe7L7m8V8263JJ0DiUVTXqEyYpUUYgnRv-as6Ulnb1uQICQo9dJkAAAGJhnZWMQ_4.csv'
     csv_path = os.path.join(directory, csv_filename)
 
     with open(csv_path, 'w', newline='') as file:
