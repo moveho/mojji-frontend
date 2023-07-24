@@ -395,10 +395,11 @@
     }
 
     function handleColorSelection(clothingType) {
+        selectedValue = clothingType; // Store the selected clothing type in the selectedValue variable
         selectedColor = document.getElementById(`colorDropdown_${clothingType}`).value;
         updateAdditionalOptionsVisibility();
     }
-
+    
     function handleCategorySelection(clothingType) {
         selectedCategory = document.getElementById(`categoryDropdown_${clothingType}`).value;
     }
