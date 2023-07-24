@@ -71,30 +71,38 @@
       <br>
       
 <!--=================================테스트====================================-->
+        <!--<select id="mySelect" onchange="handleSelection()">-->
+        <!--    <option value="default">의류를 선택하세요</option>-->
+        <!--    {% for file_name in object_names %}-->
+        <!--        {% set base_name = file_name.rsplit('_', 1)[0] %}-->
+        <!--        {% if base_name in ["short_sleeved_shirt", "long_sleeved_shirt", "vest", "sling"] %}-->
+        <!--            <option value="{{ file_name }}">상 의</option>-->
+        <!--        {% elif base_name in ["shorts", "trousers", "skirt"] %}-->
+        <!--            <option value="{{ file_name }}">하 의</option>-->
+        <!--        {% elif base_name in ["short_sleeved_outwear", "long_sleeved_outwear"] %}-->
+        <!--            <option value="{{ file_name }}">아우터</option>-->
+        <!--        {% elif base_name in ["short_sleeved_dress", "long_sleeved_dress", "vest_dress", "sling_dress"] %}-->
+        <!--            <option value="{{ file_name }}">드레스</option>-->
+        <!--        {% endif %}-->
+        <!--    {% endfor %}-->
+        <!--</select>-->
+<!--===========================================================================-->
         <select id="mySelect" onchange="handleSelection()">
             <option value="default">의류를 선택하세요</option>
             {% for file_name in object_names %}
                 {% set base_name = file_name.rsplit('_', 1)[0] %}
                 {% if base_name in ["short_sleeved_shirt", "long_sleeved_shirt", "vest", "sling"] %}
-                    <option value="{{ file_name }}">상 의</option>
+                    <option value="{{ file_name }}" data-category="top">상 의</option>
                 {% elif base_name in ["shorts", "trousers", "skirt"] %}
-                    <option value="{{ file_name }}">하 의</option>
+                    <option value="{{ file_name }}" data-category="bottom">하 의</option>
                 {% elif base_name in ["short_sleeved_outwear", "long_sleeved_outwear"] %}
-                    <option value="{{ file_name }}">아우터</option>
+                    <option value="{{ file_name }}" data-category="outwear">아우터</option>
                 {% elif base_name in ["short_sleeved_dress", "long_sleeved_dress", "vest_dress", "sling_dress"] %}
-                    <option value="{{ file_name }}">드레스</option>
+                    <option value="{{ file_name }}" data-category="dress">드레스</option>
                 {% endif %}
             {% endfor %}
         </select>
-<!--===========================================================================-->
-        <!--<select id="mySelect" onchange="showImage()">-->
-        <!--    <option value="default">의류를 선택하세요</option>-->
-        <!--    {% for object_name in object_names %}-->
-        <!--        {% set image_path = url_for('static', filename='images/mojji-output-img/' + directory_name + '/' + object_name + '.png') %}-->
-        <!--        <option value="{{ image_path }}">{{ object_name }}</option>-->
-        <!--    {% endfor %}-->
-        <!--</select>-->
-<!--############################################################################################################-->
+        
 <img id="myImage" src="" class="animate__animated animate__delay-1s animate__fadeInUp" style="width: 15%;">
         <div class="container" item-align="center" style="margin-top: 50px; margin-bottom: 70px;">
                 <div class="item-wrapper">
@@ -223,6 +231,48 @@
 </section>
 
 <script>
+    function handleSelection() {
+        var selectElement = document.getElementById("mySelect");
+        var selectedOption = selectElement.options[selectElement.selectedIndex];
+
+        var selectedValue = selectedOption.value;
+        var selectedCategory = selectedOption.getAttribute("data-category");
+
+        exportToCSV(selectedValue, selectedCategory);
+    }
+
+    function exportToCSV(file_name, category) {
+        var data = [
+            ["Clothing Type", "Color", "Category"],
+            [selectedValue, selectedColor, selectedCategory]
+        ];
+
+        var csvContent = "data:text/csv;charset=utf-8,";
+
+        data.forEach(function (rowArray) {
+            var row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+
+        var encodedUri = encodeURI(csvContent);
+
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    console.log("CSV file saved successfully.");
+                } else {
+                    console.error("Failed to save CSV file.");
+                }
+            }
+        };
+
+        var csvFileName = category + ".csv";
+        xhr.open("POST", "/save-csv-new?identifier=" + encodeURIComponent(file_name) + "&directory_name_split=" + category, true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.send(JSON.stringify({ data: encodedUri }));
+    }
+
     var selectedClothingType = "";
 
     function showImage() {
@@ -241,24 +291,8 @@
             var identifier = urlParams.get("identifier").replace(/\.[^/.]+$/, "");
 
             // Construct the imageURL using the identifier and selectedValue
-            // var imageURL = '/' + identifier + '?code=' + encodeURIComponent(selectedValue);
-            // image.src = imageURL;
-
-            // Extract the value of 'code' and 'image_url' from the query parameters
-            var code = new URLSearchParams(window.location.search).get('code');
-            var image_url = new URLSearchParams(window.location.search).get('image_url');
-            
-            // Construct the imageURL using the 'code' and 'image_url'
-            var imageURL = '/check_user?' + 'code=' + encodeURIComponent(code) + '&image_url=' + encodeURIComponent(image_url);
+            var imageURL = '/' + identifier + '?code=' + encodeURIComponent(selectedValue);
             image.src = imageURL;
-
-            // Get the English term for the selected clothing type
-            var selectedClothingWithoutExtension = selectedValue.replace(/\.[^.]+$/, "");
-            var selectedClothingWithoutSuffix = selectedClothingWithoutExtension.replace(/_\d+$/, "");
-            selectedCategory = getCategoryAndEnglishTerm(selectedClothingWithoutSuffix);
-
-            // Update the category dropdown options based on the selected clothing type
-            updateCategoryDropdownOptions(selectedValue);
         }
     }
 
@@ -337,54 +371,54 @@
 
     //     csvCounter++;
     // }
-// ========================================================================================================
+// ====================================체크====================================================================
 
-    var csvCounter = 1;
-    var selectedValue = "";
-    var directoryNameSplit = "{{ directory_name }}";
+    // var csvCounter = 1;
+    // var selectedValue = "";
+    // var directoryNameSplit = "{{ directory_name }}";
     
-    function exportToCSV(identifier) {
-        var selectedEnglishClothingType = koreanToEnglishClothing(selectedValue); // Use the selectedValue variable
+    // function exportToCSV(identifier) {
+    //     var selectedEnglishClothingType = koreanToEnglishClothing(selectedValue); // Use the selectedValue variable
         
-        // Remove the ".png" extension from selectedValue
-        var selectedClothingWithoutExtension = selectedValue.replace(/\.[^.]+$/, "");
+    //     // Remove the ".png" extension from selectedValue
+    //     var selectedClothingWithoutExtension = selectedValue.replace(/\.[^.]+$/, "");
     
-        // Remove the "_0" suffix from selectedClothingWithoutExtension
-        var selectedClothingWithoutSuffix = selectedClothingWithoutExtension.replace(/_\d+$/, "");
+    //     // Remove the "_0" suffix from selectedClothingWithoutExtension
+    //     var selectedClothingWithoutSuffix = selectedClothingWithoutExtension.replace(/_\d+$/, "");
     
-        // Get the English term for the selected clothing type
-        selectedEnglishClothingType = getCategoryAndEnglishTerm(selectedClothingWithoutSuffix); // Update the selectedEnglishClothingType
+    //     // Get the English term for the selected clothing type
+    //     selectedEnglishClothingType = getCategoryAndEnglishTerm(selectedClothingWithoutSuffix); // Update the selectedEnglishClothingType
         
-        var data = [
-            ["Clothing Type", "Color", "Category"],
-            [selectedEnglishClothingType, selectedColor, selectedCategory]
-        ];
+    //     var data = [
+    //         ["Clothing Type", "Color", "Category"],
+    //         [selectedEnglishClothingType, selectedColor, selectedCategory]
+    //     ];
     
-        var csvContent = "data:text/csv;charset=utf-8,";
+    //     var csvContent = "data:text/csv;charset=utf-8,";
     
-        data.forEach(function (rowArray) {
-            var row = rowArray.join(",");
-            csvContent += row + "\r\n";
-        });
+    //     data.forEach(function (rowArray) {
+    //         var row = rowArray.join(",");
+    //         csvContent += row + "\r\n";
+    //     });
     
-        var encodedUri = encodeURI(csvContent);
+    //     var encodedUri = encodeURI(csvContent);
     
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    console.log("CSV file saved successfully.");
-                } else {
-                    console.error("Failed to save CSV file.");
-                }
-            }
-        };
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.onreadystatechange = function () {
+    //         if (xhr.readyState === 4) {
+    //             if (xhr.status === 200) {
+    //                 console.log("CSV file saved successfully.");
+    //             } else {
+    //                 console.error("Failed to save CSV file.");
+    //             }
+    //         }
+    //     };
     
-        var csvFileName = directoryNameSplit + ".csv";
-        xhr.open("POST", "/save-csv-new?identifier=" + encodeURIComponent(identifier), true);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.send(JSON.stringify({ data: encodedUri }));
-    }
+    //     var csvFileName = directoryNameSplit + ".csv";
+    //     xhr.open("POST", "/save-csv-new?identifier=" + encodeURIComponent(identifier), true);
+    //     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    //     xhr.send(JSON.stringify({ data: encodedUri }));
+    // }
     
     function handleColorSelection(clothingType) {
         selectedValue = clothingType; // Store the selected clothing type in the selectedValue variable
@@ -406,37 +440,70 @@
 
 
 // ========================================================================================================
-
-    function processDataAndExportToCSV(identifier) {
-        // 데이터를 서버로 전달하기 위해 XMLHttpRequest 사용
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                // 서버로부터 받은 데이터
-                var data = JSON.parse(xhr.responseText);
-
-                // 데이터를 CSV 형식으로 변환
-                var csvContent = "data:text/csv;charset=utf-8,";
-                csvContent += "Clothing Type,Color,Category\r\n";
-                csvContent += data["Clothing Type"] + "," + data["Color"] + "," + data["Category"] + "\r\n";
-
-                // CSV 파일 저장을 위해 <a> 태그를 동적으로 생성
-                var encodedUri = encodeURI(csvContent);
-                var link = document.createElement("a");
-                link.setAttribute("href", encodedUri);
-                link.setAttribute("download", data["Category"] + ".csv");
-                document.body.appendChild(link);
-
-                // 다운로드 링크를 클릭하여 CSV 파일 다운로드
-                link.click();
-            }
-        };
-
-        xhr.open("POST", "/process_data?identifier=" + encodeURIComponent(identifier), true);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.send();
-    }
+    // var csvCounter = 1;
+    
+    // function exportToCSV(identifier) {
+    //     var selectedEnglishClothingType = koreanToEnglishClothing(selectedClothingType);
         
+    //     // Remove the ".png" extension from selectedClothingType
+    //     var selectedClothingWithoutExtension = selectedClothingType.replace(/\.[^.]+$/, "");
+        
+    
+    //     // Remove the "_0" suffix from selectedClothingWithoutExtension
+    //     var selectedClothingWithoutSuffix = selectedClothingWithoutExtension.replace(/_\d+$/, "");
+    
+    //     // Get the English term for the selected clothing type
+    //     var selectedEnglishClothingType = getCategoryAndEnglishTerm(selectedClothingWithoutSuffix);
+    
+    //     var data = [
+    //         ["Clothing Type", "Color", "Category"],
+    //         [selectedEnglishClothingType, selectedColor, selectedCategory]
+    //     ];
+    
+    //     var csvContent = "data:text/csv;charset=utf-8,";
+    
+    //     data.forEach(function (rowArray) {
+    //         var row = rowArray.join(",");
+    //         csvContent += row + "\r\n";
+    //     });
+        
+    
+    //     var encodedUri = encodeURI(csvContent);
+
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.onreadystatechange = function () {
+    //         if (xhr.readyState === 4) {
+    //             if (xhr.status === 200) {
+    //                 console.log("CSV file saved successfully.");
+    //             } else {
+    //                 console.error("Failed to save CSV file.");
+    //             }
+    //         }
+    //     };
+
+    //     xhr.open("POST", "/save-csv-new?identifier=" + encodeURIComponent(identifier), true);
+    //     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    //     xhr.send(JSON.stringify({ data: encodedUri }));
+
+    //     csvCounter++;
+    // }
+
+    // function extractClothingType(url) {
+    //     var startIndex = url.lastIndexOf("/") + 1; // Find the last index of "/"
+    //     var endIndex = url.lastIndexOf("_"); // Find the last index of "_"
+    //     var clothingType = url.substring(startIndex, endIndex); // Extract the substring between "/" and "_"
+    //     return clothingType;
+    // }
+
+    // function handleColorSelection(clothingType) {
+    //     selectedColor = document.getElementById(`colorDropdown_${clothingType}`).value;
+    //     updateAdditionalOptionsVisibility();
+    // }
+
+    // function handleCategorySelection(clothingType) {
+    //     selectedCategory = document.getElementById(`categoryDropdown_${clothingType}`).value;
+    // }
+
     function resetDropdownValues() {
         selectedClothingType = "";
         selectedColor = "";
@@ -529,26 +596,26 @@
     //         document.getElementById("selectedCategory").innerText = koreanString;
     //     }
     // }
+// =====================체크=======================
+    // function handleSelection() {
+    //     const dropdown = document.getElementById("mySelect");
+    //     const selectedValue = dropdown.options[dropdown.selectedIndex].value;
+    //     const image = document.getElementById("myImage");
 
-    function handleSelection() {
-        const dropdown = document.getElementById("mySelect");
-        const selectedValue = dropdown.options[dropdown.selectedIndex].value;
-        const image = document.getElementById("myImage");
+    //     if (selectedValue === "default") {
+    //         image.src = ""; // Default image URL
+    //     } else {
+    //         // Get the English category for the selected clothing type
+    //         const englishCategory = mapKoreanToEnglish(selectedValue);
 
-        if (selectedValue === "default") {
-            image.src = ""; // Default image URL
-        } else {
-            // Get the English category for the selected clothing type
-            const englishCategory = mapKoreanToEnglish(selectedValue);
+    //         // Get the Korean string for the English category
+    //         const koreanString = mapEnglishToKorean(englishCategory);
 
-            // Get the Korean string for the English category
-            const koreanString = mapEnglishToKorean(englishCategory);
-
-            // Update the image and display the Korean string
-            image.src = "https://mojji-output-img.s3.ap-northeast-2.amazonaws.com/after_detection_"+ "{{directory_name}}/" + selectedValue; // Replace with the actual path to the image
-            document.getElementById("selectedCategory").innerText = koreanString;
-        }
-    }
+    //         // Update the image and display the Korean string
+    //         image.src = "https://mojji-output-img.s3.ap-northeast-2.amazonaws.com/after_detection_"+ "{{directory_name}}/" + selectedValue; // Replace with the actual path to the image
+    //         document.getElementById("selectedCategory").innerText = koreanString;
+    //     }
+    // }
 </script>
 
 

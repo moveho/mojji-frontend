@@ -814,7 +814,7 @@ def save_csv():
         os.makedirs(directory)
 
     # Generate a unique filename using the sanitized identifier and directory_name_split
-    csv_filename = f'CFmLTLyfApYEjw50zoAKOrVUe7L7m8V8263JJ0DiUVTXqEyYpUUYgnRv-as6Ulnb1uQICQo9dJkAAAGJhnZWMQ_4.csv'
+    csv_filename = f'{directory_name_split}.csv'
     csv_path = os.path.join(directory, csv_filename)
 
     with open(csv_path, 'w', newline='') as file:
@@ -829,25 +829,6 @@ def save_csv():
     # Use the sanitized identifier for redirection
     return redirect(url_for('result', identifier=sanitized_identifier))
 
-@app.route('/process_data', methods=['POST'])
-def process_data():
-    if clothing_type == "상 의":
-        clothing_type = "top"
-    elif clothing_type == "하 의":
-        clothing_type = "bottom"
-    elif clothing_type == "아우터":
-        clothing_type = "outwear"
-    elif clothing_type == "드레스":
-        clothing_type = "dress"
-
-    # 데이터를 JSON 형식으로 생성하여 반환
-    data = {
-        "Clothing Type": clothing_type,
-        "Color": color,
-        "Category": category
-    }
-
-    return jsonify(data)
 # =====================================테스트=============================================
 
 # const fs = require("fs");
