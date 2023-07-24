@@ -4,11 +4,18 @@ pipeline {
     stages {
         stage('Stop Local Server') {
             steps {
-                sh 'kill $(pgrep -f "python3 app.py")' // Send SIGTERM signal
                 script {
-                    sleep 1 // Wait for 1 minute for graceful shutdown (1 minute = 1)
+                    // Get the PID of the Python process
+                    def pid = sh(script: 'pgrep -f "python3 app.py"', returnStdout: true).trim()
+                    // If the process is running, stop it using sudo
+                    if (pid) {
+                        sh "sudo kill ${pid}" // Send SIGTERM signal
+                        sleep 1 // Wait for 1 second for graceful shutdown
+                        sh "sudo kill -9 ${pid}" // Forcefully terminate if still running
+                    } else {
+                        echo "Python app is not running."
+                    }
                 }
-                sh 'kill -9 $(pgrep -f "python3 app.py")' // Forcefully terminate if still running
             }
         }
 
