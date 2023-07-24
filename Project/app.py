@@ -269,7 +269,7 @@ def result():
     oauth_code = session.get('oauth_code', '')
     image_code = request.args.get('code', '')
     identifier = request.args.get('identifier', '')
-    print(f"Received identifier: {identifier}")
+    directory_name_split = request.args.get('directory_name_split', '')
 
     s3 = boto3.client(
         service_name="s3",
@@ -282,7 +282,7 @@ def result():
     image_urls.clear()
 
     # Fetch images from S3 based on the identifier
-    folder_name = f"{identifier.rsplit('_', 1)[0]}"
+    folder_name = "{{directory_name_split}}"
     objects = get_objects_from_s3(s3, "resultimg", folder_name)
 
     # Get the URLs of the objects and append them to the image_urls list

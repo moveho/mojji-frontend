@@ -28,7 +28,7 @@ pipeline {
                     sh 'pip3 install -r requirements.txt'
 
                     // Use 'su' and 'nohup' to run the 'python3 app.py' command as the ubuntu user
-                    sh 'su ubuntu -c "nohup python3 app.py > app.log 2>&1 &"'
+                    sh 'su ubuntu -c "/home/ubuntu/environment/Project/python3 app.py > app.log 2>&1 &"'
                 }
             }
         }
