@@ -27,9 +27,8 @@ pipeline {
                 dir('/var/lib/jenkins/workspace/mojji-pipeline/Project') {
                     sh 'pip3 install -r requirements.txt'
 
-                    // Run the 'python3 app.py' command in the background using '&' and wait for 1 minute
-                    sh 'python3 app.py &'
-                    sh 'sleep 1m'
+                    // Use sudo to run the 'python3 app.py' command as the ubuntu user
+                    sh 'sudo -u ubuntu python3 app.py > app.log 2>&1 &'
                 }
             }
         }

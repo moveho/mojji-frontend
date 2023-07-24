@@ -264,7 +264,6 @@ def map_english_to_string(english_category):
 def result(directory_name_split):
     oauth_code = session.get('oauth_code', '')
     image_code = request.args.get('code', '')
-    print(f"Received identifier: {directory_name_split}")
 
     # Fetch images from S3 based on the directory_name_split
     image_urls = get_image_urls_from_s3(directory_name_split)
