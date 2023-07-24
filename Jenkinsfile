@@ -28,11 +28,10 @@ pipeline {
                     // Install required Python dependencies
                     sh 'pip3 install -r requirements.txt'
 
-                    // Run the 'python3 app.py' command in the background
+                    // Run the 'python3 app.py' command in the background using '&'
                     sh 'nohup python3 app.py > /dev/null 2>&1 &'
                 }
             }
         }
     }
 }
-

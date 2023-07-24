@@ -291,11 +291,10 @@
             var image_url = new URLSearchParams(window.location.search).get('image_url');
 
             // Construct the imageURL using the 'code' and 'selectedValue'
-            var imageURL = '/check_user?' + 'code=' + encodeURIComponent(code) + '&image_url=' + encodeURIComponent(image_url) + '&clothing_type=' + encodeURIComponent(selectedValue);
+            var imageURL = image_url + '?code=' + encodeURIComponent(code) + '&clothing_type=' + encodeURIComponent(selectedValue);
             image.src = imageURL;
         }
     }
-
 
     // Convert the Python list `image_names` to a JavaScript array
     var image_names = {{ image_names | default([]) | tojson }};
