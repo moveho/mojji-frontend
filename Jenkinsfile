@@ -27,8 +27,8 @@ pipeline {
                 dir('/var/lib/jenkins/workspace/mojji-pipeline/Project') {
                     sh 'pip3 install -r requirements.txt'
 
-                    // Use sudo to run the 'python3 app.py' command as the ubuntu user
-                    sh 'sudo -u ubuntu python3 app.py > app.log 2>&1 &'
+                    // Use 'su' and 'nohup' to run the 'python3 app.py' command as the ubuntu user
+                    sh 'su ubuntu -c "nohup python3 app.py > app.log 2>&1 &"'
                 }
             }
         }
