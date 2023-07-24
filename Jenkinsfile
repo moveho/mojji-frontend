@@ -1,24 +1,35 @@
 pipeline {
     agent any
-
     stages {
-        stage('change dir') {
+        stage('Checkout SCM') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Build') {
+            steps {
+                // Add build steps here if needed
+            }
+        }
+        stage('Test') {
+            steps {
+                // Add test steps here if needed
+            }
+        }
+        stage('Deploy') {
             steps {
                 dir('/var/lib/jenkins/workspace/mojji-pipeline/Project') {
-                    // Your steps within this directory
+                    sh 'pip3 install -r requirements.txt'
+                    sh 'sh cicd.sh &'
+                    sleep 5m
+                    sh 'kill $(pgrep -f "python3 app.py")'
                 }
             }
         }
-        stage('deploy') {
-            steps {
-                dir('/var/lib/jenkins/workspace/mojji-pipeline/Project') {
-                    // Install required Python dependencies
-                    sh 'pip3 install -r requirements.txt'
-
-                    // Run the 'python3 app.py' command in the background
-                    sh 'nohup python3 app.py &'
-                }
-            }
+    }
+    post {
+        always {
+            // Clean up any resources if needed
         }
     }
 }
