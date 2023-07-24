@@ -812,7 +812,7 @@ def save_csv():
         os.makedirs(directory)
 
     # Generate a unique filename using the sanitized identifier and directory_name_split
-    csv_filename = f"{directory_name_split}_{sanitized_identifier}.csv"
+    csv_filename = {{directory_name_split}} + ".csv"
     csv_path = os.path.join(directory, csv_filename)
 
     with open(csv_path, 'w', newline='') as file:
@@ -826,6 +826,7 @@ def save_csv():
 
     # Use the sanitized identifier for redirection
     return redirect(url_for('result', identifier=identifier_param))
+
 
 # =====================================테스트=============================================
 
