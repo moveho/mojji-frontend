@@ -20,9 +20,11 @@ pipeline {
             steps {
                 dir('/var/lib/jenkins/workspace/mojji-pipeline/Project') {
                     sh 'pip3 install -r requirements.txt'
-                    sh 'sh cicd.sh &'
-                    sleep 5m
-                    sh 'kill $(pgrep -f "python3 app.py")'
+                    sh '''
+                        sh cicd.sh &
+                        sleep 5m
+                        kill $(pgrep -f "python3 app.py")
+                    '''
                 }
             }
         }
