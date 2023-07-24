@@ -288,7 +288,7 @@
         } else {
             // Get the identifier from the current URL and remove the file extension
             var urlParams = new URLSearchParams(window.location.search);
-            var identifier = urlParams.get("identifier").replace(/\.[^/.]+$/, "");
+            var identifier = urlParams.get("code").replace(/\.[^/.]+$/, "");
 
             // Construct the imageURL using the identifier and selectedValue
             var imageURL = '/' + identifier + '?code=' + encodeURIComponent(selectedValue);
