@@ -47,10 +47,8 @@
                 </div>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true"><li class="nav-item"><a class="nav-link link text-black text-primary display-7" href="/#top">로그인</a></li>
-                    <li class="nav-item"><a class="nav-link link text-black text-primary display-7" href="/#top">회원가입</a></li></ul>
-                
-                
+                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true"><li class="nav-item"><a id="logout-link" class="nav-link link text-black text-primary display-7" href="#">로그아웃</a></li></ul>
+                <script src='/static/main.js'></script>
             </div>
         </div>
     </nav>
@@ -71,35 +69,27 @@
         </div>
     
       <br>
-
-<!-- ============================원본================================-->
-    <!--<select id="mySelect" onchange="handleSelection()">-->
-    <!--    <option value="default">의류를 선택하세요</option>-->
-    <!--    {% for image_name in image_names %}-->
-    <!--        {% if "short_sleeved_shirt" in image_name or "long_sleeved_shirt" in image_name or "vest" in image_name or "sling" in image_name %}-->
-    <!--            <option value="상 의">상 의</option>-->
-    <!--        {% elif "shorts" in image_name or "trousers" in image_name or "skirt" in image_name %}-->
-    <!--            <option value="하 의">하 의</option>-->
-    <!--        {% elif "short_sleeved_outwear" in image_name or "long_sleeved_outwear" in image_name %}-->
-    <!--            <option value="아우터">아우터</option>-->
-    <!--        {% else %}-->
-    <!--            <option value="드레스">드레스</option>-->
-    <!--        {% endif %}-->
-    <!--    {% endfor %}-->
-    <!--</select>-->
-<!--==---------------------------------------------------------------------->
+      
+<!--=================================테스트====================================-->
         <select id="mySelect" onchange="showImage()">
             <option value="default">의류를 선택하세요</option>
-            {% for image_name in image_names %}
-                {% set image_path = url_for('static', filename='images/mojji-output-img/' + directory_name + '/' + image_name + '.png') %}
-                <option value="{{ image_path }}">{{ image_name }}</option>
+            {% for object_name in object_names %}
+                {% set image_path = url_for('static', filename='images/mojji-output-img/' + directory_name + '/' + object_name + '.png') %}
+                {% if object_name in object_names_in_directory %}
+                    <option value="{{ image_path }}">{{ object_name }}</option>
+                {% endif %}
             {% endfor %}
         </select>
-
-
+<!--===========================================================================-->
+        <!--<select id="mySelect" onchange="showImage()">-->
+        <!--    <option value="default">의류를 선택하세요</option>-->
+        <!--    {% for object_name in object_names %}-->
+        <!--        {% set image_path = url_for('static', filename='images/mojji-output-img/' + directory_name + '/' + object_name + '.png') %}-->
+        <!--        <option value="{{ image_path }}">{{ object_name }}</option>-->
+        <!--    {% endfor %}-->
+        <!--</select>-->
 <!--############################################################################################################-->
 <img id="myImage" src="" class="animate__animated animate__delay-1s animate__fadeInUp" style="width: 15%;">
-
         <div class="container" item-align="center" style="margin-top: 50px; margin-bottom: 70px;">
                 <div class="item-wrapper">
                     <div class="item-img">
@@ -166,119 +156,96 @@
             </div>
         </div>
         <div class="mbr-section-btn mt-3" style="margin-bottom: 50px;">
-            <button class="btn btn-primary display-4" onclick="exportToCSV('{{ identifier }}'); redirectToResult('{{ identifier }}');">제 출</button>
+            <button class="btn btn-primary display-4" onclick="exportToCSV('{{ identifier }}'); sendImageData();">제 출</button>
         </div>
-        
         <script>
-        function redirectToResult() {
-            var identifier = "{{ identifier }}";  // Retrieve the identifier from Flask template variable
-        
-            // Construct the URL with the current identifier
-            var url = '/result?identifier=' + encodeURIComponent(identifier);
-        
-            // Redirect to the result page with the identifier as a query parameter
-            window.location.href = url;
-        }
+            function sendImageData() {
+              var code = "{{ code }}";
+              var result_url = "{{ result_url }}";
+              var directory_name_split = "{{ directory_name }}";
+              var oauth_code = "{{ oauth_code }}";
+            
+              // 폼 생성
+              var form = document.createElement("form");
+              form.method = "GET";
+              form.action = "/result"; // Change the action to "/check_user_url" endpoint
+            
+              // 각 데이터를 폼에 추가
+              var codeInput = document.createElement("input");
+              codeInput.type = "hidden";
+              codeInput.name = "code";
+              codeInput.value = code;
+              form.appendChild(codeInput);
+            
+              var imageURLInput = document.createElement("input");
+              imageURLInput.type = "hidden";
+              imageURLInput.name = "result_url";
+              imageURLInput.value = result_url;
+              form.appendChild(imageURLInput);
+            
+              var directoryNameSplitInput = document.createElement("input");
+              directoryNameSplitInput.type = "hidden";
+              directoryNameSplitInput.name = "directory_name_split";
+              directoryNameSplitInput.value = directory_name_split;
+              form.appendChild(directoryNameSplitInput);
+            
+              var oauthCodeInput = document.createElement("input");
+              oauthCodeInput.type = "hidden";
+              oauthCodeInput.name = "oauth_code";
+              oauthCodeInput.value = oauth_code;
+              form.appendChild(oauthCodeInput);
+            
+              // 폼을 body에 추가하고 제출
+              document.body.appendChild(form);
+              form.submit();
+            }
         </script>
     </div>
 </section>
 
 <script>
-// ============================= rin_test ====================================
     var selectedClothingType = "";
-    
+
     function showImage() {
         var selectBox = document.getElementById("mySelect");
         var selectedValue = selectBox.options[selectBox.selectedIndex].value;
         var image = document.getElementById("myImage");
-    
+
         // Save the selected value to the global variable
         selectedClothingType = selectedValue;
 
         if (selectedValue === "default") {
             image.src = ""; // Default image URL
-        } else {    
+        } else {
             // Get the identifier from the current URL and remove the file extension
             var urlParams = new URLSearchParams(window.location.search);
             var identifier = urlParams.get("identifier").replace(/\.[^/.]+$/, "");
-    
+
             // Construct the imageURL using the identifier and selectedValue
-            var imageURL = selectedValue;
+            // var imageURL = '/' + identifier + '?code=' + encodeURIComponent(selectedValue);
+            // image.src = imageURL;
+
+            // Extract the value of 'code' and 'image_url' from the query parameters
+            var code = new URLSearchParams(window.location.search).get('code');
+            var image_url = new URLSearchParams(window.location.search).get('image_url');
+            
+            // Construct the imageURL using the 'code' and 'image_url'
+            var imageURL = '/check_user?' + 'code=' + encodeURIComponent(code) + '&image_url=' + encodeURIComponent(image_url);
             image.src = imageURL;
-    
+
             // Get the English term for the selected clothing type
             var selectedClothingWithoutExtension = selectedValue.replace(/\.[^.]+$/, "");
             var selectedClothingWithoutSuffix = selectedClothingWithoutExtension.replace(/_\d+$/, "");
             selectedCategory = getCategoryAndEnglishTerm(selectedClothingWithoutSuffix);
-    
-            // Update the category dropdown options based on selected clothing type
+
+            // Update the category dropdown options based on the selected clothing type
             updateCategoryDropdownOptions(selectedValue);
         }
     }
-// ===============================================================================
-// =========================== test zone ==========================================
-    // var selectedClothingType = "";
-    // var selectedColor = "";
-    // var selectedCategory = "";
-    
-    // function showImage() {
-    //     var selectBox = document.getElementById("mySelect");
-    //     var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-    //     var image = document.getElementById("myImage");
-    
-    //     // Save the selected value to the global variable
-    //     selectedClothingType = selectedValue;
-    
-    //     if (selectedValue === "default") {
-    //         image.src = ""; // Default image URL
-    //     } else {
-    //         // Get the identifier from the current URL and remove the file extension
-    //         var urlParams = new URLSearchParams(window.location.search);
-    //         var identifier = urlParams.get("identifier").replace(/\.[^/.]+$/, "");
-    
-    //         // Construct the imageURL using the identifier and selectedValue
-    //         var imageURL = `${selectedValue}`;
-    //         image.src = imageURL;
-    
-    //         // Update the category dropdown options based on selected clothing type
-    //         updateCategoryDropdownOptions(selectedValue);
-    //     }
-    // }
-// ============================= 원본 ========================================
-    // var selectedClothingType = "";
-    // var selectedColor = "";
-    // var selectedCategory = "";
 
-    // function showImage(category) {
-    //     var image = document.getElementById("myImage");
-    //     var identifier = "{{ identifier }}";  // Retrieve the identifier from Flask template variable
-        
-    //     // Modify the selectedClothingType based on the category received
-    //     selectedClothingType = category;
-    //     var selectedEnglishClothingType = koreanToEnglishClothing(selectedClothingType);
-
-    //     if (category === "default") {
-    //         image.src = ""; // Default image URL
-    //     } else {
-    //         // Get the identifier from the current URL and remove the file extension
-    //         var urlParams = new URLSearchParams(window.location.search);
-    //         var identifier = urlParams.get("identifier").replace(/\.[^/.]+$/, "");
-    //         // Assuming directory_name and image_name are defined and contain valid values
-    //         // var directory_name = "your_directory_name"; // Replace "your_directory_name" with the actual directory name
-    //         var urlParams = new URLSearchParams(window.location.search);
-    // //         var identifier = urlParams.get("identifier").replace(/\.[^/.]+$/, "");
-    //         var image_name = "long_sleeved_outwear_0"; // Replace "your_image_name" with the actual image name without the extension
-            
-    //         // // Construct the imageURL using the identifier and selectedValue
-    //         var imageURL = "{{ url_for('static', filename='images/mojji-output-img/after_detection_') }}" + identifier + '/' + image_name + '.png';
-    //         image.src = imageURL;
-    //     }
-    // }
-    
-// =================================================rin test zone====================
 
     // Convert the Python list `image_names` to a JavaScript array
-    var image_names = {{ image_names | tojson }};
+    var image_names = {{ image_names | default([]) | tojson }};
 
     // Define a function to get the category and English term for a given clothing type
     function getCategoryAndEnglishTerm(clothingType) {
@@ -302,6 +269,8 @@
             return "dress";
         }
     }
+
+    
     var csvCounter = 1;
     
     function exportToCSV(identifier) {
@@ -328,6 +297,7 @@
             var row = rowArray.join(",");
             csvContent += row + "\r\n";
         });
+        
     
         var encodedUri = encodeURI(csvContent);
 
@@ -348,8 +318,7 @@
 
         csvCounter++;
     }
-// ========================================================================================================
-    // Function to extract the clothing type from the URL
+
     function extractClothingType(url) {
         var startIndex = url.lastIndexOf("/") + 1; // Find the last index of "/"
         var endIndex = url.lastIndexOf("_"); // Find the last index of "_"
@@ -364,11 +333,10 @@
 
     function handleCategorySelection(clothingType) {
         selectedCategory = document.getElementById(`categoryDropdown_${clothingType}`).value;
-        // Handle the category selection here or perform any other necessary actions
     }
 
     function resetDropdownValues() {
-        selectedClothingType = ""; // Set default value for Clothing Type
+        selectedClothingType = "";
         selectedColor = "";
         selectedCategory = "";
         document.getElementById(`colorDropdown_top`).value = "";
@@ -388,85 +356,6 @@
         }
     }
 
-    // function exportToCSV(identifier) {
-    //     // Remove the ".png" extension from selectedClothingType
-    //     var selectedClothingWithoutExtension = selectedClothingType.replace(/\.[^.]+$/, "");
-    
-    //     // Remove the "_0" suffix from selectedClothingWithoutExtension
-    //     var selectedClothingWithoutSuffix = selectedClothingWithoutExtension.replace(/_\d+$/, "");
-    
-    //     var data = [
-    //         ["Clothing Type", "Color", "Category"],
-    //         [selectedClothingWithoutSuffix, selectedColor, selectedCategory]
-    //     ];
-    
-    //     var csvContent = "data:text/csv;charset=utf-8,";
-    
-    //     data.forEach(function (rowArray) {
-    //         var row = rowArray.join(",");
-    //         csvContent += row + "\r\n";
-    //     });
-    
-    //     var encodedUri = encodeURI(csvContent);
-
-    //     var xhr = new XMLHttpRequest();
-    //     xhr.onreadystatechange = function () {
-    //         if (xhr.readyState === 4) {
-    //             if (xhr.status === 200) {
-    //                 console.log("CSV file saved successfully.");
-    //             } else {
-    //                 console.error("Failed to save CSV file.");
-    //             }
-    //         }
-    //     };
-
-    //     xhr.open("POST", "/save-csv-new?identifier=" + encodeURIComponent(identifier), true);
-    //     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    //     xhr.send(JSON.stringify({ data: encodedUri }));
-
-    //     csvCounter++;
-    // }
-
-
-// 정상
-//   var csvCounter = 1;
-//     function exportToCSV(identifier) {
-//         // Modify the Clothing Type based on Korean to English conversion
-//         var selectedEnglishClothingType = koreanToEnglishClothing(selectedClothingType);
-    
-//         var data = [
-//             ["Clothing Type", "Color", "Category"],
-//             [selectedEnglishClothingType, selectedColor, selectedCategory]
-//         ];
-    
-//         var csvContent = "data:text/csv;charset=utf-8,";
-    
-//         data.forEach(function (rowArray) {
-//             var row = rowArray.join(",");
-//             csvContent += row + "\r\n";
-//         });
-    
-//         var encodedUri = encodeURI(csvContent);
-    
-//         var xhr = new XMLHttpRequest();
-//         xhr.onreadystatechange = function () {
-//             if (xhr.readyState === 4) {
-//                 if (xhr.status === 200) {
-//                     console.log("CSV file saved successfully.");
-//                 } else {
-//                     console.error("Failed to save CSV file.");
-//                 }
-//             }
-//         };
-    
-//         xhr.open("POST", "/save-csv-new?identifier=" + encodeURIComponent(identifier), true);
-//         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-//         xhr.send(JSON.stringify({ data: encodedUri }));
-    
-//         csvCounter++;
-//     }
-    
-    // Add the koreanToEnglishClothing function here (from the previous response)
     function koreanToEnglishClothing(koreanCategory) {
         switch (koreanCategory) {
             case "상 의":
@@ -481,8 +370,7 @@
                 return "";
         }
     }
-    
-    // Define a variable to store the selected value
+
     var selectedValue = "";
     
     function handleSelection() {

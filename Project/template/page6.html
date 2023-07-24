@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  >
+<html>
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,11 +23,9 @@
   <link rel="preload" href="https://fonts.googleapis.com/css?family=Pangolin:400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pangolin:400&display=swap"></noscript>
   <link rel="preload" as="style" href="static/mobirise/css/mbr-additional.css"><link rel="stylesheet" href="static/mobirise/css/mbr-additional.css" type="text/css">
-
-  
-  
-  
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 </head>
+
 <body>
   
   <section data-bs-version="5.1" class="menu cid-s48OLK6784" once="menu" id="menu1-1l">
@@ -51,10 +49,8 @@
                 </div>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true"><li class="nav-item"><a class="nav-link link text-black text-primary display-7" href="/#top">로그인</a></li>
-                    <li class="nav-item"><a class="nav-link link text-black text-primary display-7" href="/#top">회원가입</a></li></ul>
-                
-                
+                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true"><li class="nav-item"><a id="logout-link" class="nav-link link text-black text-primary display-7" href="#">로그아웃</a></li></ul>
+                <script src='/static/main.js'></script>
             </div>
         </div>
     </nav>
@@ -72,91 +68,52 @@
                         </div>
                     </div>
                     <div class="col-12 col-lg">
-                        <div data-preset="bubble" class="mg-item mb-3 ldBar label-center" data-value="50" data-preset="circle">
-                            <div id="myBar"></div>
-                            <!--<img src="static/images/progress-bar-options-indeterminate2x-1649699625180-1.gif">-->
-                        </div>
                         <br>
-                        <!--<button class="btn btn-primary" type="button" onclick="window.location.href='/check_user'">-->
-                        <!--  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>-->
-                        <!--  &nbsp&nbsp&nbspLoading...-->
-                        <!--</button>-->
-                        <!--#########################################################################################-->
-                        <!-- Button to redirect to the new directory route -->
-                        <!-- Button to redirect to the new directory route -->
-                        <!--<button class="btn btn-primary" type="button" onclick="redirectToDirectory()">-->
-                        <!--  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>-->
-                        <!--  &nbsp;&nbsp;&nbsp;Loading...-->
-                        <!--</button>-->
-                        
-                        <!-- JavaScript to handle the button click and AJAX request -->
-                        <!--<script>
-                          function redirectToDirectory() {
-                            // AJAX request to get the new directory name from the server
-                            var xhr = new XMLHttpRequest();
-                            xhr.onreadystatechange = function() {
-                              if (xhr.readyState === 4 && xhr.status === 200) {
-                                var directory = xhr.responseText.trim();
-                                var url = "/check_user/" + directory; // Build the URL with the new directory name
-                                window.location.href = url; // Redirect to the new route
-                              }
-                            };
-                            xhr.open("GET", "/get_directory_name", true);
-                            xhr.send();
-                          }
-                        </script>-->
-                        
-                        <!-- Script for the progress bar -->
-                        <!--<script>
-                          var i = 0;
-                          function move() {
-                            if (i == 0) {
-                              i = 1;
-                              var elem = document.getElementById("myBar");
-                              var width = 1;
-                              var id = setInterval(frame, 10);
-                              function frame() {
-                                if (width >= 100) {
-                                  clearInterval(id);
-                                  i = 0;
-                                } else {
-                                  width++;
-                                  elem.style.width = width + "%";
-                                }
-                              }
-                            }
-                          }
-                        </script>-->
-
-                        <form action="/check_user" method="GET" id="directoryForm">
-                          <input type="hidden" name="identifier" value="DIRECTORY_VALUE_TO_BE_SUBMITTED" id="directoryInput">
-                        </form>
-                        
-                        <!-- Button to trigger the form submission -->
-                        <button class="btn btn-primary animate__animated animate__delay-1s animate__fadeInUp" type="button" onclick="submitFormAndRedirect()">
+                        <button class="btn btn-primary animate__animated animate__delay-1s animate__fadeInUp" type="button" onclick="sendImageData()">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            &nbsp;&nbsp;&nbsp;Loading...
+                            &nbsp;&nbsp;&nbsp;로딩 중...
                         </button>
                         <script>
-                            function submitFormAndRedirect() {
-                                var uniqueFilename = "{{ unique_filename }}";
-                                var imageURL = "{{ image_url }}";
-                                var form = document.createElement("form");
-                                form.method = "GET";
-                                form.action = "/check_user";
-                                var identifierInput = document.createElement("input");
-                                identifierInput.type = "hidden";
-                                identifierInput.name = "identifier";
-                                identifierInput.value = uniqueFilename;
-                                var imageURLInput = document.createElement("input");
-                                imageURLInput.type = "hidden";
-                                imageURLInput.name = "image_url";
-                                imageURLInput.value = imageURL;
-                                form.appendChild(identifierInput);
-                                form.appendChild(imageURLInput);
-                                document.body.appendChild(form);
-                                form.submit();
-                            }
+                        function sendImageData() {
+                          var code = "{{ unique_filename }}";
+                          var load_url_check = "{{ load_url_check }}";
+                          var directory_name_split = "{{ directory_name_split }}";
+                          var oauth_code = "{{ oauth_code }}";
+                        
+                          // 폼 생성
+                          var form = document.createElement("form");
+                          form.method = "GET";
+                          form.action = "/user_check"; // Change the action to "/check_user_url" endpoint
+                        
+                          // 각 데이터를 폼에 추가
+                          var codeInput = document.createElement("input");
+                          codeInput.type = "hidden";
+                          codeInput.name = "code";
+                          codeInput.value = code;
+                          form.appendChild(codeInput);
+                        
+                          var imageURLInput = document.createElement("input");
+                          imageURLInput.type = "hidden";
+                          imageURLInput.name = "load_url_check";
+                          imageURLInput.value = load_url_check;
+                          form.appendChild(imageURLInput);
+                        
+                          var directoryNameSplitInput = document.createElement("input");
+                          directoryNameSplitInput.type = "hidden";
+                          directoryNameSplitInput.name = "directory_name_split";
+                          directoryNameSplitInput.value = directory_name_split;
+                          form.appendChild(directoryNameSplitInput);
+                        
+                          var oauthCodeInput = document.createElement("input");
+                          oauthCodeInput.type = "hidden";
+                          oauthCodeInput.name = "oauth_code";
+                          oauthCodeInput.value = oauth_code;
+                          form.appendChild(oauthCodeInput);
+                        
+                          // 폼을 body에 추가하고 제출
+                          document.body.appendChild(form);
+                          form.submit();
+                        }
                         </script>
                     </div>
                 </div>
