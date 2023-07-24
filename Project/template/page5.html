@@ -339,7 +339,7 @@
     // }
 // ========================================================================================================
     function exportToCSV(identifier, directoryName) {
-        var selectedEnglishClothingType = koreanToEnglishClothing(selectedClothingType);
+        var selectedEnglishClothingT = koreanToEnglishClothing(selectedClothingType);
         var selectedClothingWithoutExtension = selectedClothingType.replace(/\.[^.]+$/, "");
         var selectedClothingWithoutSuffix = selectedClothingWithoutExtension.replace(/_\d+$/, "");
         var selectedEnglishClothingType = getCategoryAndEnglishTerm(selectedClothingWithoutSuffix);
