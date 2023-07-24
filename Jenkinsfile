@@ -1,37 +1,24 @@
 pipeline {
     agent any
+
     stages {
-        stage('Checkout SCM') {
+        stage('Stop Local Server') {
             steps {
-                checkout scm
+                sh 'pkill -f "python3 app.py"'
             }
         }
-        stage('Build') {
-            steps {
-                // Add build steps here if needed
-            }
-        }
-        stage('Test') {
-            steps {
-                // Add test steps here if needed
-            }
-        }
+
         stage('Deploy') {
+            agent {
+                label 'your_remote_server_label' // Replace with the label of the remote server agent
+            }
             steps {
-                dir('/var/lib/jenkins/workspace/mojji-pipeline/Project') {
+                dir('/var/lib/jenkins/workspace/mojji-deploy/Project') {
                     sh 'pip3 install -r requirements.txt'
-                    sh '''
-                        sh cicd.sh &
-                        sleep 5m
-                        kill $(pgrep -f "python3 app.py")
-                    '''
+                    sh 'nohup python3 app.py > /dev/null 2>&1 &'
+                    sleep 5m
                 }
             }
-        }
-    }
-    post {
-        always {
-            // Clean up any resources if needed
         }
     }
 }

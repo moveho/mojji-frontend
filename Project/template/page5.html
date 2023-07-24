@@ -175,7 +175,7 @@
         <!--    <button class="btn btn-primary display-4" onclick="exportToCSV('{{ identifier }}'); sendImageData();">제 출</button>-->
         <!--</div>-->
         <div class="mbr-section-btn mt-3" style="margin-bottom: 50px;">
-            <button class="btn btn-primary display-4" onclick="exportToCSV('{{ identifier }}'); sendImageData();">제출</button>
+            <button class="btn btn-primary display-4" onclick="exportToCSV('{{ identifier }}', '{{ directory_name }}'); sendImageData();">제출</button>
         </div>
         <script>
             function sendImageData() {
@@ -344,7 +344,7 @@
     
     function exportToCSV(identifier) {
         var selectedEnglishClothingType = koreanToEnglishClothing(selectedValue); // Use the selectedValue variable
-    
+        
         // Remove the ".png" extension from selectedValue
         var selectedClothingWithoutExtension = selectedValue.replace(/\.[^.]+$/, "");
     
@@ -508,42 +508,41 @@
         }
     }
 
-
     var selectedValue = "";
 
-// // ========================================================================================
-//     function mapKoreanToEnglish(category) {
-//         switch (category) {
-//             case "short_sleeved_shirt":
-//             case "long_sleeved_shirt":
-//             case "vest":
-//             case "sling":
-//                 return "top";
-//             case "shorts":
-//             case "trousers":
-//             case "skirt":
-//                 return "bottom";
-//             case "short_sleeved_outwear":
-//             case "long_sleeved_outwear":
-//                 return "outwear";
-//             default:
-//                 return "dress";
-//         }
-//     }
+// ========================================================================================
+    function mapKoreanToEnglish(category) {
+        switch (category) {
+            case "short_sleeved_shirt":
+            case "long_sleeved_shirt":
+            case "vest":
+            case "sling":
+                return "top";
+            case "shorts":
+            case "trousers":
+            case "skirt":
+                return "bottom";
+            case "short_sleeved_outwear":
+            case "long_sleeved_outwear":
+                return "outwear";
+            default:
+                return "dress";
+        }
+    }
 
-//     // JavaScript function to map English categories to the corresponding Korean strings
-//     function mapEnglishToKorean(englishCategory) {
-//         switch (englishCategory) {
-//             case "top":
-//                 return "상 의";
-//             case "bottom":
-//                 return "하 의";
-//             case "outwear":
-//                 return "아우터";
-//             default:
-//                 return "드레스";
-//         }
-//     }
+    // JavaScript function to map English categories to the corresponding Korean strings
+    function mapEnglishToKorean(englishCategory) {
+        switch (englishCategory) {
+            case "top":
+                return "상 의";
+            case "bottom":
+                return "하 의";
+            case "outwear":
+                return "아우터";
+            default:
+                return "드레스";
+        }
+    }
 
     // // JavaScript function to handle the clothing type selection and update the image and options
     // function handleSelection() {
