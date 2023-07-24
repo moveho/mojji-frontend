@@ -767,7 +767,9 @@ def save_csv():
     # Sanitize the identifier to remove non-alphanumeric characters
     sanitized_identifier = re.sub(r'\W+', '_', identifier_param)
 
-    directory = '/home/ubuntu/environment/efs/crawling_csv'
+    # Use the "{{ directory_name }}" for the directory path
+    directory_name = "{{ directory_name }}"
+    directory = os.path.join('/home/ubuntu/environment/efs', directory_name)
     if not os.path.exists(directory):
         os.makedirs(directory)
 
@@ -785,7 +787,8 @@ def save_csv():
             writer.writerow(values)
 
     # Use the sanitized identifier for redirection
-    return redirect(url_for('result', identifier=identifier_param, oauth_code=oauth_code))
+    return redirect(url_for('result', identifier=sanitized_identifier, oauth_code=oauth_code, directory=directory))
+
 
 
 #########################################################################

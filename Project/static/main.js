@@ -1,17 +1,15 @@
 // # 시작 함수
 // 해당파일제일 최하단에 실행함수 존재함.
 const init = () => {
-	// 버튼 이벤트 등록
-	// document.querySelector("#kakao").addEventListener('click', onKakao);
-	// document.querySelector("#logout").addEventListener('click', onLogout);
-    document.querySelector("#kakao").addEventListener('click', onKakao);
-    document.querySelector("#logout-link").addEventListener('click', onLogout);
-	
-	// 자동 로그인 실행
-	autoLogin();
+  // 버튼 이벤트 등록
+  document.querySelector("#kakao").addEventListener('click', onKakao);
+  document.querySelector("#logout-link").addEventListener('click', onLogout);
 
-	// 해당 함수는 Router 대신 실행하는 함수입니다.
-	redirectPage();
+  // 자동 로그인 실행
+  autoLogin();
+
+  // 해당 함수는 Router 대신 실행하는 함수입니다.
+  redirectPage();
 }
 
 // 팝업창 열기
