@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Stop Local Server') {
             steps {
-                sh 'pkill -f "python3 app.py"'
+                sh 'sudo pkill -f "python3 app.py"'
             }
         }
 

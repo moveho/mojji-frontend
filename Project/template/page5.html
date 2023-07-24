@@ -340,32 +340,35 @@
 // ========================================================================================================
 
     var csvCounter = 1;
-    var selectedValue = ""; // Add a variable to store the selected clothing type
-    var directoryNameSplit = "{{ directory_name_split }}"; // Get the directory_name_split from the template variable
-
+    var selectedValue = "";
+    var directoryNameSplit = "{{ directory_name_split }}";
+    
     function exportToCSV(identifier) {
         var selectedEnglishClothingType = koreanToEnglishClothing(selectedValue); // Use the selectedValue variable
-
-        // Remove the ".jpg" extension from selectedValue
-        var selectedClothingWithoutExtension = selectedValue.replace(".jpg", "");
-
+        
+        // Remove the ".png" extension from selectedValue
+        var selectedClothingWithoutExtension = selectedValue.replace(/\.[^.]+$/, "");
+    
+        // Remove the "_0" suffix from selectedClothingWithoutExtension
+        var selectedClothingWithoutSuffix = selectedClothingWithoutExtension.replace(/_\d+$/, "");
+    
         // Get the English term for the selected clothing type
-        selectedEnglishClothingType = getCategoryAndEnglishTerm(selectedClothingWithoutExtension); // Update the selectedEnglishClothingType
-
+        selectedEnglishClothingType = getCategoryAndEnglishTerm(selectedClothingWithoutSuffix); // Update the selectedEnglishClothingType
+        
         var data = [
             ["Clothing Type", "Color", "Category"],
             [selectedEnglishClothingType, selectedColor, selectedCategory]
         ];
-
+    
         var csvContent = "data:text/csv;charset=utf-8,";
-
+    
         data.forEach(function (rowArray) {
             var row = rowArray.join(",");
             csvContent += row + "\r\n";
         });
-
+    
         var encodedUri = encodeURI(csvContent);
-
+    
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
@@ -376,20 +379,11 @@
                 }
             }
         };
-
-        var csvFileName = directoryNameSplit + ".csv"; // CSV file name with directory_name_split
+    
+        var csvFileName = directoryNameSplit + ".csv";
         xhr.open("POST", "/save-csv-new?identifier=" + encodeURIComponent(identifier), true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.send(JSON.stringify({ data: encodedUri }));
-    }
-    
-        var directory_name_split = "{{ directory_name }}"; // Get the directory name from the template variable
-        var csvFileName = directory_name_split + ".csv"; // CSV file name with directory_name and counter
-        xhr.open("POST", "/save-csv-new?identifier=" + encodeURIComponent(identifier), true);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.send(JSON.stringify({ data: encodedUri }));
-    
-        csvCounter++;
     }
     
     function handleColorSelection(clothingType) {
