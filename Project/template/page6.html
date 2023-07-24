@@ -74,6 +74,15 @@
                             &nbsp;&nbsp;&nbsp;로딩 중...
                         </button>
                         <script>
+                        function changeButton() {
+                            // 변경할 내용으로 버튼 요소를 대체
+                            document.getElementById("loadingButton").innerHTML = "로딩 완료!";
+                            document.getElementById("loadingButton").setAttribute("true");
+                        }
+                        
+                        // 10초 후에 changeButton() 함수를 호출하여 버튼 변경
+                        setTimeout(changeButton, 10000); // 10초를 밀리초로 변환하여 설정
+
                         function sendImageData() {
                           var code = "{{ unique_filename }}";
                           var load_url_check = "{{ load_url_check }}";
