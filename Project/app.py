@@ -258,17 +258,22 @@ def map_english_to_string(english_category):
 #     return render_template('page4.html', image_urls=image_urls, identifier=identifier)
     
         
-########################################################################################
-
-#######################################rResult 테스트#################################################
-image_urls = []
+##########################################테스트##############################################
 
 @app.route('/result', methods=['GET'])
 def result():
     oauth_code = session.get('oauth_code', '')
     image_code = request.args.get('code', '')
     identifier = request.args.get('identifier', '')
-    print(f"Received identifier: {identifier}")
+    directory_name_split = request.args.get('directory_name_split', '')
+
+    # Fetch images from S3 based on the identifier
+    image_urls = get_image_urls_from_s3(identifier)
+
+    return render_template('page4.html', image_urls=image_urls, identifier=identifier, image_code=image_code, directory_name_split=directory_name_split)
+
+def get_image_urls_from_s3(identifier):
+    image_urls = []
 
     s3 = boto3.client(
         service_name="s3",
@@ -276,9 +281,6 @@ def result():
         aws_access_key_id=S3_ACCESS_KEY,
         aws_secret_access_key=S3_SECRET_ACCESS_KEY
     )
-
-    # Clear the image_urls list before adding new images
-    image_urls.clear()
 
     # Fetch images from S3 based on the identifier
     folder_name = f"{identifier.rsplit('_', 1)[0]}"
@@ -289,13 +291,50 @@ def result():
         image_url = f"https://resultimg.s3.ap-northeast-2.amazonaws.com/{obj['Key']}"
         image_urls.append(image_url)
 
-    return render_template('page4.html', image_urls=image_urls, identifier=identifier, image_code=image_code)
+    return image_urls
 
 def get_objects_from_s3(s3_client, bucket_name, folder_name):
     # Retrieve objects from the specified folder in the S3 bucket
     response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=folder_name)
     objects = response.get('Contents', [])
     return objects
+
+#######################################rResult 원본#################################################
+# image_urls = []
+
+# @app.route('/result', methods=['GET'])
+# def result():
+#     oauth_code = session.get('oauth_code', '')
+#     image_code = request.args.get('code', '')
+#     identifier = request.args.get('identifier', '')
+#     print(f"Received identifier: {identifier}")
+
+#     s3 = boto3.client(
+#         service_name="s3",
+#         region_name=S3_BUCKET_REGION,
+#         aws_access_key_id=S3_ACCESS_KEY,
+#         aws_secret_access_key=S3_SECRET_ACCESS_KEY
+#     )
+
+#     # Clear the image_urls list before adding new images
+#     image_urls.clear()
+
+#     # Fetch images from S3 based on the identifier
+#     folder_name = f"{identifier.rsplit('_', 1)[0]}"
+#     objects = get_objects_from_s3(s3, "resultimg", folder_name)
+
+#     # Get the URLs of the objects and append them to the image_urls list
+#     for obj in objects:
+#         image_url = f"https://resultimg.s3.ap-northeast-2.amazonaws.com/{obj['Key']}"
+#         image_urls.append(image_url)
+
+#     return render_template('page4.html', image_urls=image_urls, identifier=identifier, image_code=image_code)
+
+# def get_objects_from_s3(s3_client, bucket_name, folder_name):
+#     # Retrieve objects from the specified folder in the S3 bucket
+#     response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=folder_name)
+#     objects = response.get('Contents', [])
+#     return objects
 
 ########################################################################################
 ####################################원본####################################################

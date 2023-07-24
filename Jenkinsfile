@@ -11,7 +11,7 @@ pipeline {
         }
         stage('Stop Local Server') {
             steps {
-                // Get the PID of the Python process
+                // Get the PID of the Python process and stop it
                 script {
                     def pid = sh(script: 'pgrep -f "python3 app.py"', returnStdout: true).trim()
                     if (pid) {
@@ -22,16 +22,17 @@ pipeline {
                 }
             }
         }
-        stage('deploy') {
+        stage('Deploy') {
             steps {
                 dir('/var/lib/jenkins/workspace/mojji-pipeline/Project') {
                     // Install required Python dependencies
                     sh 'pip3 install -r requirements.txt'
 
-                    // Run the 'python3 app.py' command in the background using '&'
-                    sh 'nohup python3 app.py > app.log 2>&1 &'
+                    // Use tmux to run the 'python3 app.py' command in the background
+                    sh 'tmux new-session -d -s my_app_session "python3 app.py"'
                 }
             }
         }
     }
 }
+

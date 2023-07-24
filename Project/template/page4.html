@@ -72,28 +72,52 @@
             </h4>
         </div>
         
-                        <div class="embla mt-4" data-skip-snaps="true" data-align="center" data-contain-scroll="trimSnaps" data-loop="true" data-auto-play-interval="5" data-draggable="true">
-                            <div class="embla__viewport container-fluid">
-                                <div class="embla__container">
-                                    {% for url in image_urls %}
-                                    <div class="embla__slide slider-image item" style="margin-left: 2rem; margin-right: 2rem;">
-                                        <div class="slide-content">
-                                            <div class="item-wrapper">
-                                                <div class="item-img">
-                                                    <img src="{{ url }}" title="" data-slide-to="{{ loop.index }}" data-bs-slide-to="{{ loop.index }}">
+                        <!--<div class="embla mt-4" data-skip-snaps="true" data-align="center" data-contain-scroll="trimSnaps" data-loop="true" data-auto-play-interval="5" data-draggable="true">-->
+                        <!--    <div class="embla__viewport container-fluid">-->
+                        <!--        <div class="embla__container">-->
+                        <!--            {% for url in image_urls %}-->
+                        <!--            <div class="embla__slide slider-image item" style="margin-left: 2rem; margin-right: 2rem;">-->
+                        <!--                <div class="slide-content">-->
+                        <!--                    <div class="item-wrapper">-->
+                        <!--                        <div class="item-img">-->
+                        <!--                            <img src="{{ url }}" title="" data-slide-to="{{ loop.index }}" data-bs-slide-to="{{ loop.index }}">-->
+                        <!--                        </div>-->
+                        <!--                    </div>-->
+                        <!--                    <div class="mbr-section-btn item-footer mt-2">-->
+                        <!--                        <a href="" class="btn item-btn btn-secondary-outline display-7" target="_blank">-->
+                        <!--                            <span class="mbrib-like mbr-iconfont mbr-iconfont-btn"></span>마음에 들어요-->
+                        <!--                        </a>-->
+                        <!--                    </div>-->
+                        <!--                </div>-->
+                        <!--            </div>-->
+                        <!--            {% endfor %}-->
+                        <!--        </div>-->
+                        <!--    </div>-->
+                        <!--</div>-->
+<!--==================================================테스트========================================================-->
+
+                            <div class="embla mt-4" data-skip-snaps="true" data-align="center" data-contain-scroll="trimSnaps" data-loop="true" data-auto-play-interval="5" data-draggable="true">
+                                <div class="embla__viewport container-fluid">
+                                    <div class="embla__container">
+                                        {% for url in image_urls %}
+                                        <div class="embla__slide slider-image item" style="margin-left: 2rem; margin-right: 2rem;">
+                                            <div class="slide-content">
+                                                <div class="item-wrapper">
+                                                    <div class="item-img">
+                                                        <img src="{{ directory_name_split }}" alt="Image {{ loop.index }}" title="Image {{ loop.index }}" data-slide-to="{{ loop.index }}" data-bs-slide-to="{{ loop.index }}">
+                                                    </div>
+                                                </div>
+                                                <div class="mbr-section-btn item-footer mt-2">
+                                                    <a href="{{ url }}" class="btn item-btn btn-secondary-outline display-7" target="_blank">
+                                                        <span class="mbrib-like mbr-iconfont mbr-iconfont-btn"></span>마음에 들어요
+                                                    </a>
                                                 </div>
                                             </div>
-                                            <div class="mbr-section-btn item-footer mt-2">
-                                                <a href="" class="btn item-btn btn-secondary-outline display-7" target="_blank">
-                                                    <span class="mbrib-like mbr-iconfont mbr-iconfont-btn"></span>마음에 들어요
-                                                </a>
-                                            </div>
                                         </div>
+                                        {% endfor %}
                                     </div>
-                                    {% endfor %}
                                 </div>
                             </div>
-                        </div>
 
                                                
                             <!--<div class="mbr-section-btn item-footer mt-2"><a href="" class="btn item-btn btn-primary-outline display-7" target="_blank"><span class="mbrib-like mbr-iconfont mbr-iconfont-btn"></span>마음에 들어요</a></div>-->
