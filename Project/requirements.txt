@@ -34,5 +34,6 @@ pytest-cov==2.8.1
 pytest-html==1.19.0
 pytest-metadata==1.7.0
 pytest-mock==1.11.2
+pymysql==1.0.2
 six==1.11.0
 
