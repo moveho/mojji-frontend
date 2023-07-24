@@ -406,70 +406,37 @@
 
 
 // ========================================================================================================
-    // var csvCounter = 1;
-    
-    // function exportToCSV(identifier) {
-    //     var selectedEnglishClothingType = koreanToEnglishClothing(selectedClothingType);
+
+    function processDataAndExportToCSV(identifier) {
+        // 데이터를 서버로 전달하기 위해 XMLHttpRequest 사용
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // 서버로부터 받은 데이터
+                var data = JSON.parse(xhr.responseText);
+
+                // 데이터를 CSV 형식으로 변환
+                var csvContent = "data:text/csv;charset=utf-8,";
+                csvContent += "Clothing Type,Color,Category\r\n";
+                csvContent += data["Clothing Type"] + "," + data["Color"] + "," + data["Category"] + "\r\n";
+
+                // CSV 파일 저장을 위해 <a> 태그를 동적으로 생성
+                var encodedUri = encodeURI(csvContent);
+                var link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", data["Category"] + ".csv");
+                document.body.appendChild(link);
+
+                // 다운로드 링크를 클릭하여 CSV 파일 다운로드
+                link.click();
+            }
+        };
+
+        xhr.open("POST", "/process_data?identifier=" + encodeURIComponent(identifier), true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.send();
+    }
         
-    //     // Remove the ".png" extension from selectedClothingType
-    //     var selectedClothingWithoutExtension = selectedClothingType.replace(/\.[^.]+$/, "");
-        
-    
-    //     // Remove the "_0" suffix from selectedClothingWithoutExtension
-    //     var selectedClothingWithoutSuffix = selectedClothingWithoutExtension.replace(/_\d+$/, "");
-    
-    //     // Get the English term for the selected clothing type
-    //     var selectedEnglishClothingType = getCategoryAndEnglishTerm(selectedClothingWithoutSuffix);
-    
-    //     var data = [
-    //         ["Clothing Type", "Color", "Category"],
-    //         [selectedEnglishClothingType, selectedColor, selectedCategory]
-    //     ];
-    
-    //     var csvContent = "data:text/csv;charset=utf-8,";
-    
-    //     data.forEach(function (rowArray) {
-    //         var row = rowArray.join(",");
-    //         csvContent += row + "\r\n";
-    //     });
-        
-    
-    //     var encodedUri = encodeURI(csvContent);
-
-    //     var xhr = new XMLHttpRequest();
-    //     xhr.onreadystatechange = function () {
-    //         if (xhr.readyState === 4) {
-    //             if (xhr.status === 200) {
-    //                 console.log("CSV file saved successfully.");
-    //             } else {
-    //                 console.error("Failed to save CSV file.");
-    //             }
-    //         }
-    //     };
-
-    //     xhr.open("POST", "/save-csv-new?identifier=" + encodeURIComponent(identifier), true);
-    //     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    //     xhr.send(JSON.stringify({ data: encodedUri }));
-
-    //     csvCounter++;
-    // }
-
-    // function extractClothingType(url) {
-    //     var startIndex = url.lastIndexOf("/") + 1; // Find the last index of "/"
-    //     var endIndex = url.lastIndexOf("_"); // Find the last index of "_"
-    //     var clothingType = url.substring(startIndex, endIndex); // Extract the substring between "/" and "_"
-    //     return clothingType;
-    // }
-
-    // function handleColorSelection(clothingType) {
-    //     selectedColor = document.getElementById(`colorDropdown_${clothingType}`).value;
-    //     updateAdditionalOptionsVisibility();
-    // }
-
-    // function handleCategorySelection(clothingType) {
-    //     selectedCategory = document.getElementById(`categoryDropdown_${clothingType}`).value;
-    // }
-
     function resetDropdownValues() {
         selectedClothingType = "";
         selectedColor = "";
