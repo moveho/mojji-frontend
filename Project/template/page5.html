@@ -71,13 +71,10 @@
       <br>
       
 <!--=================================테스트====================================-->
-        <select id="mySelect" onchange="showImage()">
+        <select id="mySelect" onchange="handleSelection()">
             <option value="default">의류를 선택하세요</option>
-            {% for object_name in object_names %}
-                {% set image_path = url_for('static', filename='images/mojji-output-img/' + directory_name + '/' + object_name + '.png') %}
-                {% if object_name in object_names_in_directory %}
-                    <option value="{{ image_path }}">{{ object_name }}</option>
-                {% endif %}
+            {% for file_name in object_names %}
+                <option value="{{ file_name }}">{{ file_name }}</option>
             {% endfor %}
         </select>
 <!--===========================================================================-->
@@ -133,20 +130,30 @@
                                     카테고리:
                                     <select id="categoryDropdown_top" name="categoryDropdown_top" onchange="handleCategorySelection('top')">
                                         <option value="">카테고리 선택</option>
-                                        <option value="long_sleeved_shirt">긴팔티셔츠</option>
-                                        <option value="short_sleeved_shirt">반팔티셔츠</option>
-                                        <option value="vest">조 끼</option>
-                                        <option value="sling">민소매</option>
-                                        <option value="short_sleeved_outwear">반팔아우터</option>
-                                        <option value="long_sleeved_outwear">긴팔아우터</option>
-                                        <option value="shorts">반바지</option>
-                                        <option value="trousers">긴바지</option>
-                                        <option value="skirt">치마</option>
-                                        <option value="short_sleeved_dress">미니원피스</option>
-                                        <option value="long_sleeved_dress">롱원피스</option>
-                                        <option value="vest_dress">조끼원피스</option>
-                                        <option value="sling_dress">민소매원피스</option>
-                                        <!-- Add more categories as needed -->
+                                            <optgroup label="상 의">
+                                                <option value="short_sleeved_shirt">반팔 셔츠</option>
+                                                <option value="long_sleeved_shirt">긴팔 셔츠</option>
+                                                <option value="vest">조끼</option>
+                                                <option value="sling">슬링</option>
+                                            </optgroup>
+                                            <!-- "shorts", "trousers", "skirt" -->
+                                            <optgroup label="하 의">
+                                                <option value="shorts">반바지</option>
+                                                <option value="trousers">바지</option>
+                                                <option value="skirt">스커트</option>
+                                            </optgroup>
+                                            <!-- "short_sleeved_outwear", "long_sleeved_outwear" -->
+                                            <optgroup label="아우터">
+                                                <option value="short_sleeved_outwear">반팔 아우터</option>
+                                                <option value="long_sleeved_outwear">긴팔 아우터</option>
+                                            </optgroup>
+                                            <!-- 나머지 -->
+                                            <optgroup label="드레스">
+                                                <option value="short_sleeved_dress">미니원피스</option>
+                                                <option value="long_sleeved_dress">롱원피스</option>
+                                                <option value="vest_dress">조끼원피스</option>
+                                                <option value="sling_dress">민소매원피스</option>
+                                        </optgroup>
                                     </select>
                                 </label>
                             </div>
@@ -378,7 +385,60 @@
         selectedValue = dropdown.options[dropdown.selectedIndex].value;
         showImage(selectedValue);
     }
+// ========================================================================================
+    function mapKoreanToEnglish(category) {
+        switch (category) {
+            case "short_sleeved_shirt":
+            case "long_sleeved_shirt":
+            case "vest":
+            case "sling":
+                return "top";
+            case "shorts":
+            case "trousers":
+            case "skirt":
+                return "bottom";
+            case "short_sleeved_outwear":
+            case "long_sleeved_outwear":
+                return "outwear";
+            default:
+                return "dress";
+        }
+    }
 
+    // JavaScript function to map English categories to the corresponding Korean strings
+    function mapEnglishToKorean(englishCategory) {
+        switch (englishCategory) {
+            case "top":
+                return "상 의";
+            case "bottom":
+                return "하 의";
+            case "outwear":
+                return "아우터";
+            default:
+                return "드레스";
+        }
+    }
+
+    // JavaScript function to handle the clothing type selection and update the image and options
+    function handleSelection() {
+        const dropdown = document.getElementById("mySelect");
+        const selectedValue = dropdown.options[dropdown.selectedIndex].value;
+        const image = document.getElementById("myImage");
+
+        if (selectedValue === "default") {
+            image.src = ""; // Default image URL
+        } else {
+            // Get the English category for the selected clothing type
+            const englishCategory = mapKoreanToEnglish(selectedValue);
+
+            // Get the Korean string for the English category
+            const koreanString = mapEnglishToKorean(englishCategory);
+
+            // Update the image and display the Korean string
+            image.src = "{{output_url}}" + '/' + selectedValue; // Replace with the actual path to the image
+            document.getElementById("selectedCategory").innerText = koreanString;
+        }
+    }
 </script>
 
 

@@ -47,12 +47,123 @@ def home():
 #     return None
 
 
-def find_directory_with_prefix(directory_path, prefix):
-    for dir_name in os.listdir(directory_path):
-        # Check if the directory name starts with the given prefix
-        if dir_name.startswith(prefix):
-            return dir_name
+# def find_directory_with_prefix(directory_path, prefix):
+#     for dir_name in os.listdir(directory_path):
+#         # Check if the directory name starts with the given prefix
+#         if dir_name.startswith(prefix):
+#             return dir_name
+#     return None
+
+# S3 client creation
+# s3 = boto3.client(
+#     service_name="s3",
+#     region_name=S3_BUCKET_REGION,
+#     aws_access_key_id=S3_ACCESS_KEY,
+#     aws_secret_access_key=S3_SECRET_ACCESS_KEY
+# )
+
+# def find_directory_with_prefix(bucket_name, prefix):
+#     response = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix, Delimiter='/')
+#     for common_prefix in response.get('CommonPrefixes', []):
+#         directory_path = common_prefix['Prefix']
+#         return directory_path
+#     return None
+
+# @app.route('/user_check', methods=['GET'])
+# def user_check():
+#     # Get the value of identifier from the query parameters
+#     identifier = request.args.get('identifier', '')
+#     oauth_code = request.args.get('oauth_code', '')
+#     directory_name_split = request.args.get('directory_name_split', '')
+#     image_code = request.args.get('code', '')
+#     file_names = request.args.get('file_names', '')
+    
+#     prefix = 'after_detection_'
+
+#     # Define the base directory path
+#     # base_directory = '/home/ubuntu/environment/efs/mojji-output-img/'
+    
+#     directory_with_prefix = find_directory_with_prefix('/home/ubuntu/environment/efs/mojji-output-img/', prefix)
+
+#     if directory_with_prefix is None:
+#         # If the directory with the prefix is not found, handle the error
+#         return "Directory with prefix '{}' not found.".format(prefix)
+
+#     # Construct the full identifier with the directory name
+#     full_identifier = os.path.join('/home/ubuntu/environment/efs/mojji-output-img/', directory_with_prefix)
+
+#     # full_identifier = os.path.join(base_directory, directory_name_split)
+
+#     object_names = []  # List to store the object names
+    
+#     # Iterate over the files in the directory
+#     for file_name in os.listdir(full_identifier):
+#         object_names.append(file_name)
+        
+#     # You can use the code to generate the S3 URL for the uploaded image
+#     s3 = boto3.client(
+#         service_name="s3",
+#         region_name=S3_BUCKET_REGION,
+#         aws_access_key_id=S3_ACCESS_KEY,
+#         aws_secret_access_key=S3_SECRET_ACCESS_KEY
+#     )
+
+#     result_url = s3.generate_presigned_url(
+#         'get_object',
+#         Params={'Bucket': "resultimg", 'Key': image_code},
+#         ExpiresIn=3600  # URL's expiration time in seconds
+#     )
+    
+#     # Pass the object names, directory name, and identifier to the template
+#     return render_template('page5.html',code=image_code, object_names=object_names, directory_name=directory_name_split, identifier=identifier, oauth_code=oauth_code, result_url=result_url, full_identifier=full_identifier, file_names=file_names)
+
+# # Function to extract file names from a directory
+# # def get_file_names_from_directory(directory_path):
+# #     file_names = os.listdir(directory_path)
+# #     return redirect(url_for('/user_check', file_names=file_names))
+
+# def get_file_names_from_directory(bucket_name, directory_path):
+#     file_names = []
+#     response = s3.list_objects_v2(Bucket=bucket_name, Prefix=directory_path)
+#     for obj in response.get('Contents', []):
+#         file_name = obj['Key'].split('/')[-1]
+#         file_names.append(file_name)
+#     return file_names
+
+# # mojji-output-img directory and its contents
+# s3_directory_path = find_directory_with_prefix('mojji-output-img', 'mojji-output-img')
+
+# if s3_directory_path is None:
+#     print("Directory with prefix '{}' not found in the S3 bucket.".format('mojji-output-img'))
+# else:
+#     # Extract file names from the directory
+#     file_names = get_file_names_from_directory('mojji-output-img', s3_directory_path)
+#     print("File names in the directory '{}':".format(s3_directory_path))
+#     print(file_names)
+########################################################################################
+
+# S3 client creation
+s3 = boto3.client(
+    service_name="s3",
+    region_name=S3_BUCKET_REGION,
+    aws_access_key_id=S3_ACCESS_KEY,
+    aws_secret_access_key=S3_SECRET_ACCESS_KEY
+)
+
+def find_directory_with_prefix(bucket_name, prefix):
+    response = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix, Delimiter='/')
+    for common_prefix in response.get('CommonPrefixes', []):
+        directory_path = common_prefix['Prefix']
+        return directory_path
     return None
+
+def get_file_names_from_directory(bucket_name, directory_path):
+    file_names = []
+    response = s3.list_objects_v2(Bucket=bucket_name, Prefix=directory_path)
+    for obj in response.get('Contents', []):
+        file_name = obj['Key'].split('/')[-1]
+        file_names.append(file_name)
+    return file_names
 
 @app.route('/user_check', methods=['GET'])
 def user_check():
@@ -61,52 +172,69 @@ def user_check():
     oauth_code = request.args.get('oauth_code', '')
     directory_name_split = request.args.get('directory_name_split', '')
     image_code = request.args.get('code', '')
-    file_names = request.args.get('file_names', '')
     
     prefix = 'after_detection_'
 
     # Define the base directory path
     # base_directory = '/home/ubuntu/environment/efs/mojji-output-img/'
     
-    directory_with_prefix = find_directory_with_prefix('/home/ubuntu/environment/efs/mojji-output-img/', prefix)
+    directory_with_prefix = find_directory_with_prefix('mojji-output-img', prefix)
 
     if directory_with_prefix is None:
         # If the directory with the prefix is not found, handle the error
         return "Directory with prefix '{}' not found.".format(prefix)
-
-    # Construct the full identifier with the directory name
-    full_identifier = os.path.join('/home/ubuntu/environment/efs/mojji-output-img/', directory_with_prefix)
-
-    # full_identifier = os.path.join(base_directory, directory_name_split)
-
-    object_names = []  # List to store the object names
-    
-    # Iterate over the files in the directory
-    for file_name in os.listdir(full_identifier):
-        object_names.append(file_name)
         
-    # You can use the code to generate the S3 URL for the uploaded image
-    s3 = boto3.client(
-        service_name="s3",
-        region_name=S3_BUCKET_REGION,
-        aws_access_key_id=S3_ACCESS_KEY,
-        aws_secret_access_key=S3_SECRET_ACCESS_KEY
-    )
+    # Construct the full identifier with the directory name
+    full_identifier = os.path.join(directory_name_split)
+    full_directory = prefix + full_identifier
 
+    object_names = get_file_names_from_directory('mojji-output-img', full_directory)
+
+    # You can use the code to generate the S3 URL for the uploaded image
     result_url = s3.generate_presigned_url(
         'get_object',
         Params={'Bucket': "resultimg", 'Key': image_code},
         ExpiresIn=3600  # URL's expiration time in seconds
     )
     
-    # Pass the object names, directory name, and identifier to the template
-    return render_template('page5.html',code=image_code, object_names=object_names, directory_name=directory_name_split, identifier=identifier, oauth_code=oauth_code, result_url=result_url, full_identifier=full_identifier, file_names=file_names)
+    output_url = s3.generate_presigned_url(
+    'get_object',
+    Params={'Bucket': "mojji-output-img", 'Key': prefix+image_code},
+    ExpiresIn=3600  # URL's expiration time in seconds
+    )
+    
+    # Mapping Korean categories to English categories for each file_name
+    english_categories = [map_korean_to_english(file_name) for file_name in object_names]
 
-# Function to extract file names from a directory
-def get_file_names_from_directory(directory_path):
-    file_names = os.listdir(directory_path)
-    return redirect(url_for('/user_check', file_names=file_names))
-########################################################################################
+    # Mapping English categories to Korean strings for each English category
+    korean_strings = [map_english_to_string(english_category) for english_category in english_categories]
+
+    # Pass the object names, directory name, and identifier to the template
+    return render_template('page5.html', code=image_code, object_names=object_names,
+                           directory_name=directory_name_split, identifier=identifier,
+                           oauth_code=oauth_code, result_url=result_url, full_identifier=full_identifier,
+                           english_categories=english_categories, korean_strings=korean_strings, output_url=output_url)
+
+def map_korean_to_english(category):
+    if category in ["short_sleeved_shirt", "long_sleeved_shirt", "vest", "sling"]:
+        return "top"
+    elif category in ["shorts", "trousers", "skirt"]:
+        return "bottom"
+    elif category in ["short_sleeved_outwear", "long_sleeved_outwear"]:
+        return "outwear"
+    else:
+        return "dress"
+
+def map_english_to_string(english_category):
+    if english_category == "top":
+        return "상 의"
+    elif english_category == "bottom":
+        return "하 의"
+    elif english_category == "outwear":
+        return "아우터"
+    else:
+        return "드레스"
+
 ###############################Result 초기#########################################################
 
 # image_urls = []
