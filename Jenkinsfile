@@ -29,7 +29,7 @@ pipeline {
                     sh 'pip3 install -r requirements.txt'
 
                     // Run the 'python3 app.py' command in the background using '&'
-                    sh 'python3 app.py'
+                    sh 'python3 app.py & disown'
                 }
             }
         }
