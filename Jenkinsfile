@@ -14,9 +14,9 @@ pipeline {
                 dir('/var/lib/jenkins/workspace/mojji-pipeline/Project') {
                     // Install required Python dependencies
                     sh 'pip3 install -r requirements.txt'
-
-                    // Run the 'python3 app.py' command
-                    sh 'sh cicd.sh'
+                    sh 'sh cicd.sh &'
+                    sleep 30s
+                    sh 'kill $(pgrep -f "python3 app.py")'
                 }
             }
         }

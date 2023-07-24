@@ -340,19 +340,19 @@
 // ========================================================================================================
 
     var csvCounter = 1;
+    var selectedValue = ""; // Add a variable to store the selected clothing type
     
     function exportToCSV(identifier) {
-        var selectedEnglishClothingType = koreanToEnglishClothing(selectedClothingType);
-        
-        // Remove the ".png" extension from selectedClothingType
-        var selectedClothingWithoutExtension = selectedClothingType.replace(/\.[^.]+$/, "");
-        
+        var selectedEnglishClothingType = koreanToEnglishClothing(selectedValue); // Use the selectedValue variable
+    
+        // Remove the ".png" extension from selectedValue
+        var selectedClothingWithoutExtension = selectedValue.replace(/\.[^.]+$/, "");
     
         // Remove the "_0" suffix from selectedClothingWithoutExtension
         var selectedClothingWithoutSuffix = selectedClothingWithoutExtension.replace(/_\d+$/, "");
     
         // Get the English term for the selected clothing type
-        var selectedEnglishClothingType = getCategoryAndEnglishTerm(selectedClothingWithoutSuffix);
+        selectedEnglishClothingType = getCategoryAndEnglishTerm(selectedClothingWithoutSuffix); // Update the selectedEnglishClothingType
     
         var data = [
             ["Clothing Type", "Color", "Category"],
@@ -365,10 +365,9 @@
             var row = rowArray.join(",");
             csvContent += row + "\r\n";
         });
-        
     
         var encodedUri = encodeURI(csvContent);
-
+    
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
@@ -379,21 +378,16 @@
                 }
             }
         };
-
+    
+        var directory_name_split = "{{ directory_name }}"; // Get the directory name from the template variable
+        var csvFileName = directory_name_split + ".csv"; // CSV file name with directory_name and counter
         xhr.open("POST", "/save-csv-new?identifier=" + encodeURIComponent(identifier), true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.send(JSON.stringify({ data: encodedUri }));
-
+    
         csvCounter++;
     }
-
-    function extractClothingType(url) {
-        var startIndex = url.lastIndexOf("/") + 1; // Find the last index of "/"
-        var endIndex = url.lastIndexOf("_"); // Find the last index of "_"
-        var clothingType = url.substring(startIndex, endIndex); // Extract the substring between "/" and "_"
-        return clothingType;
-    }
-
+    
     function handleColorSelection(clothingType) {
         selectedValue = clothingType; // Store the selected clothing type in the selectedValue variable
         selectedColor = document.getElementById(`colorDropdown_${clothingType}`).value;
@@ -403,6 +397,80 @@
     function handleCategorySelection(clothingType) {
         selectedCategory = document.getElementById(`categoryDropdown_${clothingType}`).value;
     }
+    
+    function extractClothingType(url) {
+        var startIndex = url.lastIndexOf("/") + 1; // Find the last index of "/"
+        var endIndex = url.lastIndexOf("_"); // Find the last index of "_"
+        var clothingType = url.substring(startIndex, endIndex); // Extract the substring between "/" and "_"
+        selectedValue = clothingType; // Store the selected clothing type in the selectedValue variable
+        return clothingType;
+    }
+
+
+// ========================================================================================================
+    // var csvCounter = 1;
+    
+    // function exportToCSV(identifier) {
+    //     var selectedEnglishClothingType = koreanToEnglishClothing(selectedClothingType);
+        
+    //     // Remove the ".png" extension from selectedClothingType
+    //     var selectedClothingWithoutExtension = selectedClothingType.replace(/\.[^.]+$/, "");
+        
+    
+    //     // Remove the "_0" suffix from selectedClothingWithoutExtension
+    //     var selectedClothingWithoutSuffix = selectedClothingWithoutExtension.replace(/_\d+$/, "");
+    
+    //     // Get the English term for the selected clothing type
+    //     var selectedEnglishClothingType = getCategoryAndEnglishTerm(selectedClothingWithoutSuffix);
+    
+    //     var data = [
+    //         ["Clothing Type", "Color", "Category"],
+    //         [selectedEnglishClothingType, selectedColor, selectedCategory]
+    //     ];
+    
+    //     var csvContent = "data:text/csv;charset=utf-8,";
+    
+    //     data.forEach(function (rowArray) {
+    //         var row = rowArray.join(",");
+    //         csvContent += row + "\r\n";
+    //     });
+        
+    
+    //     var encodedUri = encodeURI(csvContent);
+
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.onreadystatechange = function () {
+    //         if (xhr.readyState === 4) {
+    //             if (xhr.status === 200) {
+    //                 console.log("CSV file saved successfully.");
+    //             } else {
+    //                 console.error("Failed to save CSV file.");
+    //             }
+    //         }
+    //     };
+
+    //     xhr.open("POST", "/save-csv-new?identifier=" + encodeURIComponent(identifier), true);
+    //     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    //     xhr.send(JSON.stringify({ data: encodedUri }));
+
+    //     csvCounter++;
+    // }
+
+    // function extractClothingType(url) {
+    //     var startIndex = url.lastIndexOf("/") + 1; // Find the last index of "/"
+    //     var endIndex = url.lastIndexOf("_"); // Find the last index of "_"
+    //     var clothingType = url.substring(startIndex, endIndex); // Extract the substring between "/" and "_"
+    //     return clothingType;
+    // }
+
+    // function handleColorSelection(clothingType) {
+    //     selectedColor = document.getElementById(`colorDropdown_${clothingType}`).value;
+    //     updateAdditionalOptionsVisibility();
+    // }
+
+    // function handleCategorySelection(clothingType) {
+    //     selectedCategory = document.getElementById(`categoryDropdown_${clothingType}`).value;
+    // }
 
     function resetDropdownValues() {
         selectedClothingType = "";
