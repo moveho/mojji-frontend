@@ -4,12 +4,15 @@ pipeline {
     stages {
         stage('change dir') {
             steps {
-	        cd /home/ubuntu/environment/Project
+                dir('/home/ubuntu/environment/Project') {
+                }
             }
         }
         stage('deploy') {
             steps {
-                sh 'python3 app.py'
+                dir('/home/ubuntu/environment/Project') {
+                    sh 'python3 app.py'
+                }
             }
         }
     }
