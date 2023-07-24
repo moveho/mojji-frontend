@@ -16,8 +16,11 @@ pipeline {
                 dir('/var/lib/jenkins/workspace/mojji-deploy/Project') {
                     sh 'pip3 install -r requirements.txt'
                     sh 'nohup python3 app.py > /dev/null 2>&1 &'
-                    sleep 5m
                 }
+                // Introduce a sleep of 5 minutes using shell step
+                sh 'sleep 5m'
+                // After the sleep, stop the Python process on the remote server
+                sh 'pkill -f "python3 app.py"'
             }
         }
     }
