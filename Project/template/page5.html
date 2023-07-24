@@ -71,33 +71,17 @@
       <br>
       
 <!--=================================테스트====================================-->
-        <!--<select id="mySelect" onchange="handleSelection()">-->
-        <!--    <option value="default">의류를 선택하세요</option>-->
-        <!--    {% for file_name in object_names %}-->
-        <!--        {% set base_name = file_name | regex_replace('\.\w+', '') | regex_replace('_\d+', '') %}-->
-        <!--        {% if base_name in ["short_sleeved_shirt", "long_sleeved_shirt", "vest", "sling"] %}-->
-        <!--            <option value="{{ base_name }}">상 의</option>-->
-        <!--        {% elif base_name in ["shorts", "trousers", "skirt"] %}-->
-        <!--            <option value="{{ base_name }}">하 의</option>-->
-        <!--        {% elif base_name in ["short_sleeved_outwear", "long_sleeved_outwear"] %}-->
-        <!--            <option value="{{ base_name }}">아우터</option>-->
-        <!--        {% else %}-->
-        <!--            <option value="{{ base_name }}">드레스</option>-->
-        <!--        {% endif %}-->
-        <!--    {% endfor %}-->
-        <!--</select>-->
-<!--===========================================================================-->
         <select id="mySelect" onchange="handleSelection()">
             <option value="default">의류를 선택하세요</option>
             {% for file_name in object_names %}
-                {% set base_name = file_name.replace('.png', '')|split('_')[0] %}
+                {% set base_name = file_name.rsplit('_', 1)[0] %}
                 {% if base_name in ["short_sleeved_shirt", "long_sleeved_shirt", "vest", "sling"] %}
                     <option value="{{ file_name }}">상 의</option>
                 {% elif base_name in ["shorts", "trousers", "skirt"] %}
                     <option value="{{ file_name }}">하 의</option>
                 {% elif base_name in ["short_sleeved_outwear", "long_sleeved_outwear"] %}
                     <option value="{{ file_name }}">아우터</option>
-                {% else %}
+                {% elif base_name in ["short_sleeved_dress", "long_sleeved_dress", "vest_dress", "sling_dress"] %}
                     <option value="{{ file_name }}">드레스</option>
                 {% endif %}
             {% endfor %}
