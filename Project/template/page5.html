@@ -175,7 +175,7 @@
         <!--    <button class="btn btn-primary display-4" onclick="exportToCSV('{{ identifier }}'); sendImageData();">제 출</button>-->
         <!--</div>-->
         <div class="mbr-section-btn mt-3" style="margin-bottom: 50px;">
-            <button class="btn btn-primary display-4" onclick="exportToCSV('{{ identifier }}', '{{ directory_name }}'); sendImageData();">제출</button>
+            <button class="btn btn-primary display-4" onclick="exportToCSV('{{ identifier }}'); sendImageData();">제출</button>
         </div>
         <script>
             function sendImageData() {
@@ -344,7 +344,7 @@
     
     function exportToCSV(identifier) {
         var selectedEnglishClothingType = koreanToEnglishClothing(selectedValue); // Use the selectedValue variable
-    
+        
         // Remove the ".png" extension from selectedValue
         var selectedClothingWithoutExtension = selectedValue.replace(/\.[^.]+$/, "");
     
