@@ -22,14 +22,14 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
+        stage('deploy') {
             steps {
                 dir('/var/lib/jenkins/workspace/mojji-pipeline/Project') {
-                    // Install required Python dependencies
                     sh 'pip3 install -r requirements.txt'
 
-                    // Use tmux to run the 'python3 app.py' command in the background
-                    sh 'tmux new-session -d -s my_app_session "python3 app.py"'
+                    // Run the 'python3 app.py' command in the background using '&' and wait for 1 minute
+                    sh 'python3 app.py &'
+                    sh 'sleep 1m'
                 }
             }
         }

@@ -260,19 +260,18 @@ def map_english_to_string(english_category):
         
 ##########################################테스트##############################################
 
-@app.route('/result', methods=['GET'])
-def result():
+@app.route('/result/<directory_name_split>', methods=['GET'])
+def result(directory_name_split):
     oauth_code = session.get('oauth_code', '')
     image_code = request.args.get('code', '')
-    identifier = request.args.get('identifier', '')
-    directory_name_split = request.args.get('directory_name_split', '')
+    print(f"Received identifier: {directory_name_split}")
 
-    # Fetch images from S3 based on the identifier
-    image_urls = get_image_urls_from_s3(identifier)
+    # Fetch images from S3 based on the directory_name_split
+    image_urls = get_image_urls_from_s3(directory_name_split)
 
-    return render_template('page4.html', image_urls=image_urls, identifier=identifier, image_code=image_code, directory_name_split=directory_name_split)
+    return render_template('page4.html', image_urls=image_urls, identifier=directory_name_split, image_code=image_code)
 
-def get_image_urls_from_s3(identifier):
+def get_image_urls_from_s3(directory_name_split):
     image_urls = []
 
     s3 = boto3.client(
@@ -282,12 +281,14 @@ def get_image_urls_from_s3(identifier):
         aws_secret_access_key=S3_SECRET_ACCESS_KEY
     )
 
-    # Fetch images from S3 based on the identifier
-    folder_name = f"{identifier.rsplit('_', 1)[0]}"
-    objects = get_objects_from_s3(s3, "resultimg", folder_name)
+    # Fetch objects from S3 based on the directory_name_split
+    objects = get_objects_from_s3(s3, "resultimg", directory_name_split)
+
+    # Sort objects based on filenames
+    sorted_objects = sorted(objects, key=lambda obj: obj['Key'])
 
     # Get the URLs of the objects and append them to the image_urls list
-    for obj in objects:
+    for obj in sorted_objects:
         image_url = f"https://resultimg.s3.ap-northeast-2.amazonaws.com/{obj['Key']}"
         image_urls.append(image_url)
 
