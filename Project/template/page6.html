@@ -69,60 +69,68 @@
                     </div>
                     <div class="col-12 col-lg">
                         <br>
-                        <button class="btn btn-primary animate__animated animate__delay-1s animate__fadeInUp" type="button" onclick="sendImageData()">
+                        <!--<button class="btn btn-primary animate__animated animate__delay-1s animate__fadeInUp" type="button" onclick="sendImageData()">-->
+                        <!--    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>-->
+                        <!--    &nbsp;&nbsp;&nbsp;로딩 중...-->
+                        <!--</button>-->
+                        <button id="loadingButton" class="btn btn-primary animate__animated animate__delay-1s animate__fadeInUp" type="button" onclick="sendImageData()" disabled>
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             &nbsp;&nbsp;&nbsp;로딩 중...
                         </button>
                         <script>
-                        function changeButton() {
-                            // 변경할 내용으로 버튼 요소를 대체
-                            document.getElementById("loadingButton").innerHTML = "로딩 완료!";
-                            document.getElementById("loadingButton").setAttribute("true");
-                        }
+                            function changeButton() {
+                                // 변경할 내용으로 버튼 요소를 대체
+                                var loadingButton = document.getElementById("loadingButton");
+                                loadingButton.innerHTML = "로딩 완료!";
+                                loadingButton.removeAttribute("disabled"); // Enable the button
+                            }
                         
-                        // 10초 후에 changeButton() 함수를 호출하여 버튼 변경
-                        setTimeout(changeButton, 10000); // 10초를 밀리초로 변환하여 설정
-
-                        function sendImageData() {
-                          var code = "{{ unique_filename }}";
-                          var load_url_check = "{{ load_url_check }}";
-                          var directory_name_split = "{{ directory_name_split }}";
-                          var oauth_code = "{{ oauth_code }}";
+                            // 10초 후에 changeButton() 함수를 호출하여 버튼 변경
+                            setTimeout(changeButton, 10000); // 10초를 밀리초로 변환하여 설정
                         
-                          // 폼 생성
-                          var form = document.createElement("form");
-                          form.method = "GET";
-                          form.action = "/user_check"; // Change the action to "/check_user_url" endpoint
+                            function sendImageData() {
+                                var loadingButton = document.getElementById("loadingButton");
+                                loadingButton.setAttribute("disabled", "true");
                         
-                          // 각 데이터를 폼에 추가
-                          var codeInput = document.createElement("input");
-                          codeInput.type = "hidden";
-                          codeInput.name = "code";
-                          codeInput.value = code;
-                          form.appendChild(codeInput);
-                        
-                          var imageURLInput = document.createElement("input");
-                          imageURLInput.type = "hidden";
-                          imageURLInput.name = "load_url_check";
-                          imageURLInput.value = load_url_check;
-                          form.appendChild(imageURLInput);
-                        
-                          var directoryNameSplitInput = document.createElement("input");
-                          directoryNameSplitInput.type = "hidden";
-                          directoryNameSplitInput.name = "directory_name_split";
-                          directoryNameSplitInput.value = directory_name_split;
-                          form.appendChild(directoryNameSplitInput);
-                        
-                          var oauthCodeInput = document.createElement("input");
-                          oauthCodeInput.type = "hidden";
-                          oauthCodeInput.name = "oauth_code";
-                          oauthCodeInput.value = oauth_code;
-                          form.appendChild(oauthCodeInput);
-                        
-                          // 폼을 body에 추가하고 제출
-                          document.body.appendChild(form);
-                          form.submit();
-                        }
+                                var code = "{{ unique_filename }}";
+                                var load_url_check = "{{ load_url_check }}";
+                                var directory_name_split = "{{ directory_name_split }}";
+                                var oauth_code = "{{ oauth_code }}";
+                              
+                                // 폼 생성
+                                var form = document.createElement("form");
+                                form.method = "GET";
+                                form.action = "/user_check"; // Change the action to "/check_user_url" endpoint
+                              
+                                // 각 데이터를 폼에 추가
+                                var codeInput = document.createElement("input");
+                                codeInput.type = "hidden";
+                                codeInput.name = "code";
+                                codeInput.value = code;
+                                form.appendChild(codeInput);
+                              
+                                var imageURLInput = document.createElement("input");
+                                imageURLInput.type = "hidden";
+                                imageURLInput.name = "load_url_check";
+                                imageURLInput.value = load_url_check;
+                                form.appendChild(imageURLInput);
+                              
+                                var directoryNameSplitInput = document.createElement("input");
+                                directoryNameSplitInput.type = "hidden";
+                                directoryNameSplitInput.name = "directory_name_split";
+                                directoryNameSplitInput.value = directory_name_split;
+                                form.appendChild(directoryNameSplitInput);
+                              
+                                var oauthCodeInput = document.createElement("input");
+                                oauthCodeInput.type = "hidden";
+                                oauthCodeInput.name = "oauth_code";
+                                oauthCodeInput.value = oauth_code;
+                                form.appendChild(oauthCodeInput);
+                              
+                                // 폼을 body에 추가하고 제출
+                                document.body.appendChild(form);
+                                form.submit();
+                            }
                         </script>
                     </div>
                 </div>

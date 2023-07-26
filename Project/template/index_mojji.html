@@ -69,14 +69,14 @@
         <div class="carousel-inner">
             <div class="carousel-item slider-image item active">
                 <div class="item-wrapper">
-                    <img class="d-block w-100" src="static/images/-coai-ppt-1-1900x1069.webp" alt="">
-                    
+                    <!--<img class="d-block w-100" src="static/images/-coai-ppt-1-1900x1069.webp" alt="">-->
+                    <img class="d-block w-100" src="static/images/mojji-main.png" alt="">
                     
                 </div>
             </div>
             <div class="carousel-item slider-image item">
                 <div class="item-wrapper">
-                    <img class="d-block w-100" src="static/images/background5.webp">
+                    <img class="d-block w-100" src="static/images/mojji-main2.png">
                     
                     
                 </div>
@@ -153,29 +153,28 @@
 </section>
 
 <section data-bs-version="5.1" class="content11 cid-tJ1S1ZjQvw" id="content11-1r">
-    
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12 col-lg-10">
                 <div class="mbr-section-btn  align-center">
                     <div class="d-flex justify-content-center">
-                    <div>
-                        <img id="previewImage" style="display: block; margin: 0 auto;">
+                        <div>
+                            <img id="previewImage" style="display: block; margin: 0 auto;">
+                        </div>
                     </div>
+                    <form method="POST" action="/upload" enctype="multipart/form-data">
+                        <div class="d-flex justify-content-center">
+                            <label for="fileInput" class="btn btn-primary display-4">
+                                사진 등록
+                                <input type="file" id="fileInput" name="file" class="custom-file-input" onchange="handleFileUpload()">
+                            </label>
+                            <label for="Upload" class="btn btn-primary-outline display-4">
+                                업로드
+                                <input type="submit" id="Upload" class="custom-file-input">
+                            </label>
+                        </div>
+                    </form>
                 </div>
-                <form method="POST" action="/upload" enctype="multipart/form-data">
-                    <div class="d-flex justify-content-center">
-                        <label for="fileInput" class="btn btn-primary display-4">
-                            사진 등록
-                            <input type="file" id="fileInput" name="file" class="custom-file-input" onchange="handleFileUpload()">
-                        </label>
-                        <label for="Upload" class="btn btn-primary-outline display-4">
-                            업로드
-                            <input type="submit" id="Upload" class="custom-file-input">
-                        </label>
-                    </div>
-                </form>
-              </div>
             </div>
         </div>
     </div>

@@ -27,6 +27,43 @@ app = Flask(__name__, template_folder='template')
 def home():
     return render_template('index_mojji.html')
 
+
+import pandas as pd
+
+@app.route('/display')
+def display_results():
+    # CSV 파일의 경로
+    file_path = '/home/ubuntu/environment/efs/output_csv/output_FKq6txnJ78dcfrg_KUrUDkENaqoWFKZH0iGe4Y0_nn5NS_FAZPV16_EfLP2nfLbJ9rmuPgorDNMAAAGJjqH3SA_6.csv'
+    
+    # CSV 파일을 pandas DataFrame으로 읽기
+    df = pd.read_csv(file_path)
+    
+    # 분석 결과를 담을 리스트
+    directory_name_split = request.args.get('directory_name_split', '')
+    analysis_results = []
+    
+    # 각 인덱스에 해당하는 분석 결과 추출
+    for index in directory_name_split.split(','):
+        clothing_type = df.loc[df['상의'] == index, '상의'].values[0]
+        color_top = df.loc[df['상의'] == index, '상의 색상'].values[0]
+        clothing_type_bottom = df.loc[df['하의'] == index, '하의'].values[0]
+        color_bottom = df.loc[df['하의'] == index, '하의 색상'].values[0]
+        clothing_type_outwear = df.loc[df['외투'] == index, '외투'].values[0]
+        color_outwear = df.loc[df['외투'] == index, '외투 색상'].values[0]
+        clothing_type_dress = df.loc[df['드레스'] == index, '드레스'].values[0]
+        color_dress = df.loc[df['드레스'] == index, '드레스 색상'].values[0]
+        
+        analysis_results.append((clothing_type, color_top, clothing_type_bottom, color_bottom,
+                                 clothing_type_outwear, color_outwear, clothing_type_dress, color_dress))
+    
+    # CSV 파일의 내용을 읽어서 file_contents 변수에 저장
+    with open(file_path, 'r') as file:
+        file_contents = file.read()
+    
+    # 분석 결과 및 CSV 파일의 내용을 HTML 템플릿에 전달하여 보여줌
+    return render_template('page5.html', analysis_results=analysis_results, file_contents=file_contents)
+
+
 # @app.route('/user_check')
 # def user_check():
     # code = request.args.get('code', '')
@@ -172,6 +209,7 @@ def user_check():
     oauth_code = request.args.get('oauth_code', '')
     directory_name_split = request.args.get('directory_name_split', '')
     image_code = request.args.get('code', '')
+    analysis_results = image_code = request.args.get('analysis_results', '')
     
     prefix = 'after_detection_'
 
@@ -207,7 +245,7 @@ def user_check():
     return render_template('page5.html', code=image_code, object_names=object_names,
                            directory_name=directory_name_split, identifier=identifier,
                            oauth_code=oauth_code, result_url=result_url, full_identifier=full_identifier,
-                           english_categories=english_categories, korean_strings=korean_strings)
+                           english_categories=english_categories, korean_strings=korean_strings, analysis_results=analysis_results)
 
 def map_korean_to_english(category):
     if category in ["short_sleeved_shirt", "long_sleeved_shirt", "vest", "sling"]:
@@ -259,14 +297,17 @@ def map_english_to_string(english_category):
     
         
 ##########################################테스트##############################################
+
 image_urls = []
 
 @app.route('/result', methods=['GET'])
 def result():
-    oauth_code = session.get('oauth_code', '')
+    image_code = request.args.get('oauth_code', '')
     image_code = request.args.get('code', '')
     identifier = request.args.get('identifier', '')
-    directory_name_split = request.args.get('directory_name_split', '')
+    directory_name_split = request.args.get('directory_name_split', '')  # Get the directory name from the request
+
+    print(f"Received identifier: {identifier}")
 
     s3 = boto3.client(
         service_name="s3",
@@ -278,21 +319,16 @@ def result():
     # Clear the image_urls list before adding new images
     image_urls.clear()
 
-    # Fetch images from S3 based on the identifier
-    folder_name = directory_name_split
+    # Fetch images from S3 based on the identifier and directory_name_split
+    folder_name = directory_name_split  # Set folder_name to the value of directory_name_split
     objects = get_objects_from_s3(s3, "resultimg", folder_name)
 
     # Get the URLs of the objects and append them to the image_urls list
     for obj in objects:
-        obj_url = s3.generate_presigned_url(
-            'get_object',
-            Params={'Bucket': 'resultimg', 'Key': {obj['Key']}},
-            ExpiresIn=3600  # URL's expiration time in seconds
-        )
-        # image_url = f"https://resultimg.s3.ap-northeast-2.amazonaws.com/{obj['Key']}"
-        image_urls.append(obj_url)
+        image_url = f"https:/resultimg.s3.ap-northeast-2.amazonaws.com/{obj['Key']}"
+        image_urls.append(image_url)
 
-    return render_template('page4.html', image_urls=image_urls, identifier=identifier, image_code=image_code)
+    return render_template('page4.html', image_urls=image_urls, identifier=identifier, image_code=image_code, code=image_code)
 
 def get_objects_from_s3(s3_client, bucket_name, folder_name):
     # Retrieve objects from the specified folder in the S3 bucket
@@ -326,7 +362,7 @@ def get_objects_from_s3(s3_client, bucket_name, folder_name):
 
 #     # Get the URLs of the objects and append them to the image_urls list
 #     for obj in objects:
-#         image_url = f"https://resultimg.s3.ap-northeast-2.amazonaws.com/{obj['Key']}"
+#         image_url = f"https:/resultimg.s3.ap-northeast-2.amazonaws.com/{obj['Key']}"
 #         image_urls.append(image_url)
 
 #     return render_template('page4.html', image_urls=image_urls, identifier=identifier, image_code=image_code)
@@ -849,7 +885,7 @@ def save_csv():
     # Sanitize the identifier to remove non-alphanumeric characters
     sanitized_identifier = re.sub(r'\W+', '_', identifier_param)
 
-    directory = '/home/ubuntu/environment/efs/crawling_csv'
+    directory = '/home/ubuntu/environment/efs/crawling-csv'
     if not os.path.exists(directory):
         os.makedirs(directory)
 
@@ -1041,11 +1077,6 @@ def oauth_userinfo_api():
 
 
 
-
-
-
-
-
 ##################CICD###############
 import signal
 
@@ -1060,4 +1091,5 @@ def stop_server(signal, frame):
 # Register the signal handler
 ######################################
 if __name__ == '__main__':
+
     app.run(host='0.0.0.0', port=5001, debug=True)
